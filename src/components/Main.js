@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import CurrentUsage from "./CurrentUsage";
+import TwentyFourHourUsage from "./TwentyFourHourUsage";
 
 const styles = (theme) => ({
   root: {
@@ -10,11 +12,11 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   twentyFourHourUsage: {
-    height: 140,
+    height: 300,
     width: 800,
   },
   currentUsage: {
-    height: 140,
+    height: 300,
     width: 200,
   },
   control: {
@@ -47,10 +49,14 @@ class GuttersGrid extends React.Component {
             spacing={Number(spacing)}
           >
             <Grid item>
-              <Paper className={classes.twentyFourHourUsage} />
+              <Paper className={classes.twentyFourHourUsage}>
+                <TwentyFourHourUsage />
+              </Paper>
             </Grid>
             <Grid item>
-              <Paper className={classes.currentUsage} />
+              <Paper className={classes.currentUsage}>
+                <CurrentUsage />
+              </Paper>
             </Grid>
           </Grid>
           {/* 
