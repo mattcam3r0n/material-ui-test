@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 // import "./App.css";
 import "../../node_modules/react-vis/dist/style.css";
-import { XYPlot,
-  // LineSeries 
+import {
+  XYPlot,
+  // LineSeries
   VerticalGridLines,
   HorizontalGridLines,
   XAxis,
@@ -11,14 +12,24 @@ import { XYPlot,
   // LineMarkSeries
 } from "react-vis";
 
+const timestamp = new Date().getTime();
+const ONE_DAY = 86400000;
+
+// xDomain={[timestamp - 2 * ONE_DAY, timestamp + 30 * ONE_DAY]}
+
 class CurrentUsage extends Component {
   render() {
     return (
       <div className="App">
-        <XYPlot width={800} height={300}>
+        <XYPlot
+          width={800}
+          height={300}
+          xType="time"
+          xDomain={[timestamp - ONE_DAY, timestamp]}
+        >
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
+          <XAxis tickLabelAngle={-45} />
           <YAxis />
           <AreaSeries
             className="area-elevated-series-1"

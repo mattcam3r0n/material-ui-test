@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 // import logo from "./logo.svg";
@@ -15,7 +14,7 @@ import Main from "./components/Main";
 const styles = () => ({
   root: {
     flexGrow: 1,
-    height: 430,
+    height: "100vh",
     zIndex: 1,
     overflow: "hidden",
     position: "relative",

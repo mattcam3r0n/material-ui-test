@@ -15,23 +15,40 @@ class CurrentUsage extends Component {
   render() {
     return (
       <div className="App">
-        <XYPlot width={200} height={300} stackBy="y">
+        <XYPlot
+          width={200}
+          height={300}
+          stackBy="y"
+          xType="ordinal"
+          colorType="linear"
+          // colorDomain={[0, 1]}
+          colorRange={["orange", "red"]}
+        >
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
           <VerticalBarSeries
+            color="green"
             data={[
-              {x: 2, y: 10},
-              {x: 4, y: 5},
-              // {x: 5, y: 15}
+              { x: "Generated", y: 5 },
+              // {x: 1, y: 15}
             ]}
           />
           <VerticalBarSeries
             data={[
-              {x: 2, y: 12},
-              {x: 4, y: 2},
-              // {x: 5, y: 11}
+              { x: "Used", y: 2, color: 0 },
+            ]}
+          />
+          <VerticalBarSeries
+            // color="orange"
+            data={[
+              { x: "Used", y: 5, color: 1 },
+            ]}
+          />
+          <VerticalBarSeries
+            data={[
+              { x: "Used", y: 2, color: 3 },
             ]}
           />
         </XYPlot>
