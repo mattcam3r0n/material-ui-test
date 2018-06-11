@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import "../../node_modules/react-vis/dist/style.css";
-import Egauge from "../lib/Egauge";
+// import Egauge from "../lib/Egauge";
 
 import {
   XYPlot,
-  // LineSeries
   VerticalGridLines,
   HorizontalGridLines,
   VerticalBarSeries,
@@ -12,6 +11,7 @@ import {
   YAxis,
   Hint,
 } from "react-vis";
+import EGaugeService from "../lib/EGaugeService";
 
 class CurrentUsage extends Component {
   constructor(props) {
@@ -37,12 +37,17 @@ class CurrentUsage extends Component {
   }
 
   componentDidMount() {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       this.updateData();
     }, 2000);
+    this.setState({
+      intervalId,
+    });
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
 
   render() {
     const { hoverValue, usedData, generatedData } = this.state;
@@ -95,34 +100,15 @@ class CurrentUsage extends Component {
   }
 
   updateData() {
-    const eg = new Egauge();
-    eg.getInstantaneousData().then((data) => {
-      const usedData = data.filter((d) => d.type === "Used").map((d, i) => {
-        return {
-          x: d.type,
-          y: d.kW,
-          color: i,
-          name: d.name,
-          kW: Math.abs(Number(d.kW)),
-        };
-      });
-      const generatedData = data
-        .filter((d) => d.type === "Generated")
-        .map((d) => {
-          return {
-            x: d.type,
-            y: d.kW,
-            name: d.name,
-            kW: Math.abs(Number(d.kW)),
-          };
+    const egService = new EGaugeService();
+    egService
+      .getCurrentUsage()
+      .then((usage) => {
+        this.setState({
+          usedData: usage.used,
+          generatedData: usage.generated,
         });
-      console.log("updateData", usedData, generatedData);
-
-      this.setState({
-        usedData,
-        generatedData,
       });
-    });
   }
 }
 

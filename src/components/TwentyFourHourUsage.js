@@ -1,23 +1,28 @@
 import React, { Component } from "react";
 // import "./App.css";
+// import Egauge from "../lib/Egauge";
+
 import "../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
-  // LineSeries
   VerticalGridLines,
   HorizontalGridLines,
   XAxis,
   YAxis,
   AreaSeries,
-  // LineMarkSeries
 } from "react-vis";
+import EGaugeService from "../lib/EGaugeService";
 
 const timestamp = new Date().getTime();
-const ONE_DAY = 86400000;
-
-// xDomain={[timestamp - 2 * ONE_DAY, timestamp + 30 * ONE_DAY]}
+const ONE_DAY = 24 * 60 * 60 * 1000; // ms in day
 
 class CurrentUsage extends Component {
+  componentDidMount() {
+    this.updateData();
+  }
+
+  componentWillUnmount() {}
+
   render() {
     return (
       <div className="App">
@@ -35,8 +40,8 @@ class CurrentUsage extends Component {
             className="area-elevated-series-1"
             color="#79c7e3"
             data={[
-              { x: 1, y: 10, y0: 1 },
-              { x: 2, y: 25, y0: 5 },
+              { x: new Date(), y: 10 },
+              { x: new Date(), y: 25 },
               { x: 3, y: 15, y0: 3 },
             ]}
             opacity={0.5}
@@ -58,6 +63,13 @@ class CurrentUsage extends Component {
         </XYPlot>
       </div>
     );
+  }
+
+  updateData() {
+    const egService = new EGaugeService();
+    egService.getHistoricalUsage().then((usage) => {
+      console.log(usage);
+    });
   }
 }
 
