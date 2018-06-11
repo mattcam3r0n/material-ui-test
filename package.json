@@ -24,5 +24,6 @@
     "eslint": "^4.19.1",
     "eslint-plugin-babel": "^5.1.0",
     "eslint-plugin-react": "^7.8.2"
-  }
+  },
+  "proxy": "http://egauge17632.egaug.es"
 }

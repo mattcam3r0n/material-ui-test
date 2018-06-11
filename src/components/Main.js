@@ -12,12 +12,14 @@ const styles = (theme) => ({
     flexGrow: 1,
   },
   twentyFourHourUsage: {
-    height: 300,
-    width: 800,
+    height: 320,
+    width: 820,
+    padding: 20
   },
   currentUsage: {
-    height: 300,
-    width: 200,
+    height: 320,
+    width: 220,
+    padding: 20
   },
   control: {
     padding: theme.spacing.unit * 2,
