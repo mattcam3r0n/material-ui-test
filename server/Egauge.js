@@ -14,7 +14,6 @@ class Egauge {
     return getData(this.instantUri, { inst: "" })
       .then(transformInstantaneous)
       .then((result) => {
-        console.log(result);
         return result.r
           .filter((r) => !excludedCategories.includes(r.n))
           .map((r) => {
@@ -104,7 +103,6 @@ function transformInstantaneous(json) {
 }
 
 function transformStored(json) {
-  console.log(json.group.data[0].r);
   const data = {
     serial: json.group.$.serial,
     delta: json.group.data[0].$.delta,

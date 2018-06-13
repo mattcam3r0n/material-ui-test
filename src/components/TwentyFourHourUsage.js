@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-// import "./App.css";
-// import Egauge from "../lib/Egauge";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "../../node_modules/react-vis/dist/style.css";
@@ -148,16 +146,27 @@ class TwentyFourHourUsage extends Component {
             );
           })}
           {hoverSeries && hoverValue ? (
-            <Hint
-              value={hoverValue}
-              format={(val) => [
-                { title: val.name, value: (val.kW / 1000).toFixed(1) + " kW" },
-              ]}
-            />
+            <Hint value={hoverValue} format={this.hintFormat} />
           ) : null}
         </XYPlot>
       </div>
     );
+  }
+
+  hintFormat(val) {
+    const labels = [
+      {
+        title: val.name,
+        value: (val.kW / 1000).toFixed(1) + " kW",
+      },
+    ];
+    if (val.type === "Used") {
+      labels.push({
+        title: "Total",
+        value: (val.totalKW / 1000).toFixed(1) + " kW",
+      });
+    }
+    return labels;
   }
 
   updateData() {
@@ -178,15 +187,17 @@ function mapData(data) {
     return {
       name: d.name,
       type: d.type,
-      color: i, // assign a color index
       series: d.series.map((s, j) => {
         const yOffset = sumKW(data.used, i, j);
+        const totalKW = sumKW(data.used, data.used.length, j);
         return {
           x: s.timeStamp,
           y: yOffset + s.kW,
           y0: yOffset,
           kW: s.kW,
+          totalKW,
           name: d.name,
+          type: d.type,
         };
       }),
     };

@@ -43,7 +43,6 @@ function filterInstantaneousData(data) {
 }
 
 function filterHistoricalData(data) {
-  console.log(data);
   const filteredData = data.columns
     .filter((d) => !excludedCategories.includes(d.name))
     .map((d) => {

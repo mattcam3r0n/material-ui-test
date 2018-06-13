@@ -8,7 +8,6 @@ export function history(request, response) {
 }
 
 function mapData(data) {
-  console.log("ctrl", data);
   // for each column, create a series object
   return {
     serial: data.serial,
