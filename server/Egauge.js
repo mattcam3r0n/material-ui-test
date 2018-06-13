@@ -14,6 +14,7 @@ class Egauge {
     return getData(this.instantUri, { inst: "" })
       .then(transformInstantaneous)
       .then((result) => {
+        console.log(result);
         return result.r
           .filter((r) => !excludedCategories.includes(r.n))
           .map((r) => {
@@ -34,19 +35,6 @@ class Egauge {
         return transformStored(result);
       })
       .then((result) => {
-        // const used = result.r.filter((r) => !usedCategories.includes(r.n));
-        // const generated = result.r.filter(
-        //   (r) => !generatedCategories.includes(r.n)
-        // );
-        // return result.r
-        //   .filter((r) => !excludedCategories.includes(r.n))
-        //   .map((r) => {
-        //     return {
-        //       type: generatedCategories.includes(r.n) ? "Generated" : "Used",
-        //       name: r.n,
-        //       kW: Math.abs(Number(r.i)),
-        //     };
-        //   });
         return result;
       });
   }
@@ -116,12 +104,13 @@ function transformInstantaneous(json) {
 }
 
 function transformStored(json) {
+  console.log(json.group.data[0].r);
   const data = {
     serial: json.group.$.serial,
     delta: json.group.data[0].$.delta,
     epoch: json.group.data[0].$.epoch,
-    time_delta: json.group.data[0].$.time_delta,
-    time_stamp: json.group.data[0].$.time_stamp,
+    timeDelta: json.group.data[0].$.time_delta,
+    timeStamp: json.group.data[0].$.time_stamp,
     columns: json.group.data[0].cname.map((c) => {
       return {
         type: c.$.t,
@@ -130,7 +119,7 @@ function transformStored(json) {
     }),
     rows: json.group.data[0].r.map((r) => {
       return {
-        cells: r.c
+        cells: r.c.map((v) => Number(v))
       };
     }),
   };

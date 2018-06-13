@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "../../node_modules/react-vis/dist/style.css";
-// import Egauge from "../lib/Egauge";
 
 import {
   XYPlot,
@@ -11,6 +10,7 @@ import {
   YAxis,
   Hint,
 } from "react-vis";
+
 import EGaugeService from "../lib/EGaugeService";
 
 class CurrentUsage extends Component {
@@ -84,6 +84,7 @@ class CurrentUsage extends Component {
             onValueMouseOver={this.setHoverValue}
             onValueMouseOut={this.clearHoverValue}
             // color="orange"
+            stroke="white"
             data={usedData}
           />
           {hoverValue ? (
@@ -101,15 +102,26 @@ class CurrentUsage extends Component {
 
   updateData() {
     const egService = new EGaugeService();
-    egService
-      .getCurrentUsage()
-      .then((usage) => {
-        this.setState({
-          usedData: usage.used,
-          generatedData: usage.generated,
-        });
+    egService.getCurrentUsage().then((usage) => {
+      this.setState({
+        usedData: usage.used.sort(sortKW).map((x, i) => {
+          x.color = i;
+          return x;
+        }),
+        generatedData: usage.generated,
       });
+    });
   }
+}
+
+function sortKW(a, b) {
+  if (a.kW < b.kW) {
+    return -1;
+  }
+  if (a.kW > b.kW) {
+    return 1;
+  }
+  return 0;
 }
 
 export default CurrentUsage;
