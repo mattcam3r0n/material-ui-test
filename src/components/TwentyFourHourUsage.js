@@ -52,7 +52,6 @@ class CurrentUsage extends Component {
   componentWillUnmount() {}
 
   setHoverSeries(seriesName) {
-    console.log("setHoverSeries", seriesName);
     this.setState({ hoverSeries: seriesName });
   }
 
@@ -76,6 +75,7 @@ class CurrentUsage extends Component {
           height={300}
           xType="time"
           xDomain={[timestamp - ONE_DAY, timestamp]}
+          yDomain={[0, 6000]}
         >
           <VerticalGridLines />
           <HorizontalGridLines />
@@ -85,9 +85,8 @@ class CurrentUsage extends Component {
             className="area-elevated-series-1"
             color="green"
             data={generatedData.series}
-            opacity={0.5}
+            opacity={0.75}
             onSeriesMouseOver={() => {
-              console.log(generatedData, hoverSeries, hoverValue);
               this.setHoverSeries(generatedData.name);
             }}
             onSeriesMouseOut={() => {
@@ -106,7 +105,7 @@ class CurrentUsage extends Component {
                 className="area-elevated-series-1"
                 color={colors[i]}
                 data={s.series}
-                // opacity={0.5}
+                opacity={0.5}
                 onSeriesMouseOver={() => {
                   this.setHoverSeries(s.name);
                 }}
@@ -125,7 +124,7 @@ class CurrentUsage extends Component {
             <Hint
               value={hoverValue}
               format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
+                { title: val.name, value: (val.kW / 1000).toFixed(1) + " kW" },
               ]}
             />
           ) : null}
@@ -138,7 +137,6 @@ class CurrentUsage extends Component {
     const egService = new EGaugeService();
     egService.getHistoricalUsage().then((usage) => {
       const mappedData = mapData(usage);
-      console.log("mappedData", mappedData);
       this.setState({
         usedData: mappedData.used,
         generatedData: mappedData.generated,
@@ -188,16 +186,6 @@ function sumKW(data, seriesIndex, valueIndex) {
   return data
     .filter((s, j) => j < seriesIndex)
     .reduce((sum, s) => sum + s.series[valueIndex].kW, 0);
-}
-
-function sortKW(a, b) {
-  if (a.kW < b.kW) {
-    return -1;
-  }
-  if (a.kW > b.kW) {
-    return 1;
-  }
-  return 0;
 }
 
 export default CurrentUsage;

@@ -57,6 +57,7 @@ class CurrentUsage extends Component {
           width={200}
           height={300}
           stackBy="y"
+          yDomain={[0, 6000]}
           xType="ordinal"
           colorType="linear"
           // colorDomain={[0, 1]}
@@ -65,7 +66,10 @@ class CurrentUsage extends Component {
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
-          <YAxis tickFormat={(t) => t / 1000 + "kW"} />
+          <YAxis
+            tickFormat={(t) => t / 1000 + " kW"}
+            // title="kW"
+          />
           <VerticalBarSeries
             color="green"
             data={generatedData}
