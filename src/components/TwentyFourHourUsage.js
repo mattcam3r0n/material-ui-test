@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 // import "./App.css";
 // import Egauge from "../lib/Egauge";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "../../node_modules/react-vis/dist/style.css";
 import {
@@ -30,7 +33,13 @@ const colors = [
   "#EB1000",
 ];
 
-class CurrentUsage extends Component {
+const styles = () => ({
+  progress: {
+    marginTop: 125,
+  },
+});
+
+class TwentyFourHourUsage extends Component {
   constructor(props) {
     super(props);
     this.setHoverSeries = this.setHoverSeries.bind(this);
@@ -39,6 +48,7 @@ class CurrentUsage extends Component {
   }
 
   state = {
+    isLoadingData: true,
     usedData: [],
     generatedData: {},
     hoverSeries: null,
@@ -73,9 +83,20 @@ class CurrentUsage extends Component {
   }
 
   render() {
-    const { usedData, generatedData, hoverSeries, hoverValue } = this.state;
+    const { classes } = this.props;
+    const {
+      isLoadingData,
+      usedData,
+      generatedData,
+      hoverSeries,
+      hoverValue,
+    } = this.state;
     return (
       <div className="App">
+        {isLoadingData ? (
+          <CircularProgress className={classes.progress} size={50} />
+        ) : null}
+
         <XYPlot
           width={800}
           height={300}
@@ -146,6 +167,7 @@ class CurrentUsage extends Component {
       this.setState({
         usedData: mappedData.used,
         generatedData: mappedData.generated,
+        isLoadingData: false,
       });
     });
   }
@@ -194,4 +216,8 @@ function sumKW(data, seriesIndex, valueIndex) {
     .reduce((sum, s) => sum + s.series[valueIndex].kW, 0);
 }
 
-export default CurrentUsage;
+TwentyFourHourUsage.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(TwentyFourHourUsage);
