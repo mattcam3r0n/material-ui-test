@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Usage from "./Usage";
 
 import "../../node_modules/react-vis/dist/style.css";
 import {
@@ -10,6 +11,7 @@ import {
   HorizontalGridLines,
   XAxis,
   YAxis,
+  LineSeries,
   AreaSeries,
   Hint,
 } from "react-vis";
@@ -35,6 +37,11 @@ const styles = () => ({
   progress: {
     marginTop: 125,
   },
+  detailsDiv: {
+    border: "solid 1px black",
+    backgroundColor: "white",
+    padding: 5,
+  },
 });
 
 class TwentyFourHourUsage extends Component {
@@ -42,6 +49,7 @@ class TwentyFourHourUsage extends Component {
     super(props);
     this.setHoverSeries = this.setHoverSeries.bind(this);
     this.setHoverValue = this.setHoverValue.bind(this);
+    this.setDetailsValue = this.setDetailsValue.bind(this);
     this.clearHoverValue = this.clearHoverValue.bind(this);
   }
 
@@ -51,6 +59,7 @@ class TwentyFourHourUsage extends Component {
     generatedData: {},
     hoverSeries: null,
     hoverValue: null,
+    detailsValue: null,
   };
 
   componentDidMount() {
@@ -63,7 +72,9 @@ class TwentyFourHourUsage extends Component {
     });
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
 
   setHoverSeries(seriesName) {
     this.setState({ hoverSeries: seriesName });
@@ -71,6 +82,36 @@ class TwentyFourHourUsage extends Component {
 
   setHoverValue(value) {
     this.setState({ hoverValue: value });
+  }
+
+  setDetailsValue(value, info) {
+    if (!info || !info.index) {
+      return;
+    }
+    const used = this.state.usedData.map((d) => {
+      const s = d.series[info.index];
+      return {
+        name: d.name,
+        x: d.type,
+        y: s.kW,
+        kW: s.kW,
+      };
+    });
+    const gend = {
+      name: this.state.generatedData.name,
+      x: this.state.generatedData.type,
+      y: this.state.generatedData.series[info.index].kW,
+      kW: this.state.generatedData.series[info.index].kW,
+    };
+    this.setState({
+      detailsValue: {
+        x: value.x,
+        y: 0,
+        maxY: 6000,
+        used,
+        generated: gend,
+      },
+    });
   }
 
   clearHoverValue() {
@@ -88,6 +129,7 @@ class TwentyFourHourUsage extends Component {
       generatedData,
       hoverSeries,
       hoverValue,
+      detailsValue,
     } = this.state;
     return (
       <div className="App">
@@ -137,7 +179,11 @@ class TwentyFourHourUsage extends Component {
                 onSeriesMouseOut={() => {
                   this.setHoverSeries(null);
                 }}
-                onNearestXY={(datapoint) => {
+                // onNearestX={(datapoint, info) => {
+                //   this.setDetailsValue(datapoint, info);
+                // }}
+                onNearestXY={(datapoint, info) => {
+                  this.setDetailsValue(datapoint, info);
                   if (hoverSeries === s.name) {
                     this.setHoverValue(datapoint);
                   }
@@ -145,8 +191,36 @@ class TwentyFourHourUsage extends Component {
               />
             );
           })}
-          {hoverSeries && hoverValue ? (
+          {hoverValue ? (
             <Hint value={hoverValue} format={this.hintFormat} />
+          ) : null}
+          {detailsValue ? (
+            <LineSeries
+              data={[
+                { x: detailsValue.x, y: detailsValue.y },
+                { x: detailsValue.x, y: detailsValue.maxY },
+              ]}
+              stroke="black"
+            />
+          ) : null}
+          {detailsValue ? (
+            <Hint
+              value={detailsValue}
+              format={this.hintFormat}
+              align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
+            >
+              <div className={classes.detailsDiv}>
+                <Usage
+                  data={{
+                    used: detailsValue.used,
+                    generated: [detailsValue.generated],
+                  }}
+                  height={120}
+                  width={120}
+                  yDomain={null}
+                />
+              </div>
+            </Hint>
           ) : null}
         </XYPlot>
       </div>

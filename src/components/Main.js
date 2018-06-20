@@ -4,22 +4,25 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import CurrentUsage from "./CurrentUsage";
+import Usage from "./Usage";
 import TwentyFourHourUsage from "./TwentyFourHourUsage";
+import EGaugeService from "../lib/EGaugeService";
 
 const styles = (theme) => ({
   root: {
     marginTop: 100,
     flexGrow: 1,
+    overflow: "auto",
   },
   twentyFourHourUsage: {
     height: 320,
     width: 820,
-    padding: 20
+    padding: 20,
   },
   currentUsage: {
     height: 320,
     width: 220,
-    padding: 20
+    padding: 20,
   },
   control: {
     padding: theme.spacing.unit * 2,
@@ -29,6 +32,7 @@ const styles = (theme) => ({
 class GuttersGrid extends React.Component {
   state = {
     spacing: "16",
+    data: {},
   };
 
   handleChange = (key) => (event, value) => {
@@ -36,6 +40,10 @@ class GuttersGrid extends React.Component {
       [key]: value,
     });
   };
+
+  componentDidMount() {
+    this.getData();
+  }
 
   render() {
     const { classes } = this.props;
@@ -60,6 +68,11 @@ class GuttersGrid extends React.Component {
                 <CurrentUsage />
               </Paper>
             </Grid>
+            <Grid item>
+              <Paper className={classes.currentUsage}>
+                <Usage data={this.state.data} height={120} width={120} yDomain={null} />
+              </Paper>
+            </Grid>
           </Grid>
           {/* 
           <Grid
@@ -77,6 +90,15 @@ class GuttersGrid extends React.Component {
         </Grid>
       </Grid>
     );
+  }
+
+  getData() {
+    const egService = new EGaugeService();
+    egService.getCurrentUsage().then((usage) => {
+      this.setState({
+        data: usage,
+      });
+    });
   }
 }
 

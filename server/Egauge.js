@@ -27,8 +27,9 @@ class Egauge {
   }
 
   getStoredData() {
-    // const excludedCategories = ["Grid", "Solar +"];
-    // const generatedCategories = ["Solar "];
+    // NOTE
+    // create a map of different time frame args? choose based on key?
+    // eg, 1h, 12h, 1d, 1w, 1m, 6m
     return getData(this.storedUri, { e: null, m: null, C: null, s: 1, n: 720 })
       .then((result) => {
         return transformStored(result);

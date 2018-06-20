@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 import "../../node_modules/react-vis/dist/style.css";
-
-import {
-  XYPlot,
-  VerticalGridLines,
-  HorizontalGridLines,
-  VerticalBarSeries,
-  XAxis,
-  YAxis,
-  Hint,
-} from "react-vis";
+import Usage from "./Usage";
 
 import EGaugeService from "../lib/EGaugeService";
 
@@ -22,8 +13,8 @@ class CurrentUsage extends Component {
 
   state = {
     hoverValue: null,
-    usedData: [],
-    generatedData: [],
+    used: [],
+    generated: [],
   };
 
   setHoverValue(value) {
@@ -51,57 +42,12 @@ class CurrentUsage extends Component {
   }
 
   render() {
-    const { hoverValue, usedData, generatedData } = this.state;
+    const { used, generated } = this.state;
     return (
-      <div className="App">
-        <XYPlot
-          width={200}
-          height={300}
-          stackBy="y"
-          yDomain={[0, 6000]}
-          xType="ordinal"
-          colorType="linear"
-          // colorDomain={[0, 1]}
-          colorRange={["yellow", "red"]}
-        >
-          <VerticalGridLines />
-          <HorizontalGridLines />
-          <XAxis />
-          <YAxis
-            tickFormat={(t) => t / 1000 + " kW"}
-            // title="kW"
-          />
-          <VerticalBarSeries
-            color="green"
-            data={generatedData}
-            onValueMouseOver={this.setHoverValue}
-            onValueMouseOut={this.clearHoverValue}
-          />
-          {hoverValue ? (
-            <Hint
-              value={hoverValue}
-              format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
-              ]}
-            />
-          ) : null}
-          <VerticalBarSeries
-            onValueMouseOver={this.setHoverValue}
-            onValueMouseOut={this.clearHoverValue}
-            // color="orange"
-            stroke="white"
-            data={usedData}
-          />
-          {hoverValue ? (
-            <Hint
-              value={hoverValue}
-              format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
-              ]}
-            />
-          ) : null}
-        </XYPlot>
-      </div>
+      <Usage data={{
+        used,
+        generated
+      }} />
     );
   }
 
@@ -109,24 +55,11 @@ class CurrentUsage extends Component {
     const egService = new EGaugeService();
     egService.getCurrentUsage().then((usage) => {
       this.setState({
-        usedData: usage.used.sort(sortKW).map((x, i) => {
-          x.color = i;
-          return x;
-        }),
-        generatedData: usage.generated,
+        used: usage.used,
+        generated: usage.generated,
       });
     });
   }
-}
-
-function sortKW(a, b) {
-  if (a.kW < b.kW) {
-    return -1;
-  }
-  if (a.kW > b.kW) {
-    return 1;
-  }
-  return 0;
 }
 
 export default CurrentUsage;
