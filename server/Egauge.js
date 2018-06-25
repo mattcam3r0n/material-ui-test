@@ -26,11 +26,19 @@ class Egauge {
       });
   }
 
-  getStoredData() {
+  getStoredData(
+    options = {
+      e: null,
+      m: null,
+      C: null,
+      s: 1,
+      n: 720,
+    }
+  ) {
     // NOTE
     // create a map of different time frame args? choose based on key?
     // eg, 1h, 12h, 1d, 1w, 1m, 6m
-    return getData(this.storedUri, { e: null, m: null, C: null, s: 1, n: 720 })
+    return getData(this.storedUri, options)
       .then((result) => {
         return transformStored(result);
       })
@@ -42,6 +50,7 @@ class Egauge {
 
 function getData(uri, options = {}) {
   const uriWithOptions = uri + buildQueryString(options);
+  console.log(uriWithOptions);
   return fetch(uriWithOptions, {
     method: "GET",
     headers: {
@@ -64,7 +73,7 @@ function getData(uri, options = {}) {
 function buildQueryString(options) {
   let qs = "?";
   Object.keys(options).forEach((k) => {
-    qs += k + (options[k] ? "=" + options[k] : "") + "&";
+    qs += k + (options[k] != null ? "=" + options[k] : "") + "&";
   });
   return qs.substring(0, qs.length - 1);
 }
@@ -113,12 +122,12 @@ function transformStored(json) {
     columns: json.group.data[0].cname.map((c) => {
       return {
         type: c.$.t,
-        name: c._
+        name: c._,
       };
     }),
     rows: json.group.data[0].r.map((r) => {
       return {
-        cells: r.c.map((v) => Number(v))
+        cells: r.c.map((v) => Number(v)),
       };
     }),
   };

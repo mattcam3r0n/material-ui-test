@@ -20,7 +20,8 @@
     "eject": "react-scripts eject",
     "client": "react-scripts start",
     "server": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "temp": "babel-node --presets es2015,stage-2 ./server/test.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

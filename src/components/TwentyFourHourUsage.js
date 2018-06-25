@@ -192,7 +192,11 @@ class TwentyFourHourUsage extends Component {
             );
           })}
           {hoverValue ? (
-            <Hint value={hoverValue} format={this.hintFormat} />
+            <Hint
+              value={hoverValue}
+              format={this.hintFormat}
+              // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
+            />
           ) : null}
           {detailsValue ? (
             <LineSeries
