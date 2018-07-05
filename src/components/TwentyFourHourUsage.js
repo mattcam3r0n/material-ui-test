@@ -17,9 +17,6 @@ import {
 } from "react-vis";
 import EGaugeService from "../lib/EGaugeService";
 
-const timestamp = new Date().getTime();
-const ONE_DAY = 24 * 60 * 60 * 1000; // ms in day
-
 const colors = [
   "#FFFE0F",
   "#FCE30D",
@@ -51,6 +48,7 @@ class TwentyFourHourUsage extends Component {
     this.setHoverValue = this.setHoverValue.bind(this);
     this.setDetailsValue = this.setDetailsValue.bind(this);
     this.clearHoverValue = this.clearHoverValue.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   state = {
@@ -60,6 +58,7 @@ class TwentyFourHourUsage extends Component {
     hoverSeries: null,
     hoverValue: null,
     detailsValue: null,
+    activeTab: "last24hours",
   };
 
   componentDidMount() {
@@ -74,6 +73,13 @@ class TwentyFourHourUsage extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.intervalId);
+  }
+
+  handleTabChange(event, value) {
+    this.setState({ activeTab: value }, () => {
+      console.log("handleTabChange", value, this.state.activeTab);
+      this.updateData();
+    });
   }
 
   setHoverSeries(seriesName) {
@@ -135,98 +141,112 @@ class TwentyFourHourUsage extends Component {
       <div className="App">
         {isLoadingData ? (
           <CircularProgress className={classes.progress} size={50} />
-        ) : null}
+        ) : null
+        // <Tabs
+        //   fullWidth
+        //   value={this.state.activeTab}
+        //   indicatorColor="primary"
+        //   textColor="primary"
+        //   onChange={this.handleTabChange}
+        // >
+        //   <Tab label="Last 24 Hours" value="last24hours" />
+        //   <Tab label="Last 7 Days" value="last7days" />
+        //   <Tab label="Last 30 Days" value="last30days" />
+        // </Tabs>
+        }
 
-        <XYPlot
-          width={800}
-          height={300}
-          xType="time"
-          xDomain={[timestamp - ONE_DAY, timestamp]}
-          yDomain={[0, 6000]}
-        >
-          <VerticalGridLines />
-          <HorizontalGridLines />
-          <XAxis tickLabelAngle={-45} />
-          <YAxis tickFormat={(v) => v / 1000 + " kW"} />
-          <AreaSeries
-            className="area-elevated-series-1"
-            color="green"
-            data={generatedData.series}
-            opacity={0.75}
-            onSeriesMouseOver={() => {
-              this.setHoverSeries(generatedData.name);
-            }}
-            onSeriesMouseOut={() => {
-              this.setHoverSeries(null);
-            }}
-            onNearestXY={(datapoint) => {
-              if (hoverSeries === generatedData.name) {
-                this.setHoverValue(datapoint);
-              }
-            }}
-          />
-          {usedData.map((s, i) => {
-            return (
-              <AreaSeries
-                key={i}
-                className="area-elevated-series-1"
-                color={colors[i]}
-                data={s.series}
-                opacity={0.5}
-                onSeriesMouseOver={() => {
-                  this.setHoverSeries(s.name);
-                }}
-                onSeriesMouseOut={() => {
-                  this.setHoverSeries(null);
-                }}
-                // onNearestX={(datapoint, info) => {
-                //   this.setDetailsValue(datapoint, info);
-                // }}
-                onNearestXY={(datapoint, info) => {
-                  this.setDetailsValue(datapoint, info);
-                  if (hoverSeries === s.name) {
-                    this.setHoverValue(datapoint);
-                  }
-                }}
-              />
-            );
-          })}
-          {hoverValue ? (
-            <Hint
-              value={hoverValue}
-              format={this.hintFormat}
-              // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
+        {isLoadingData ? null : (
+          <XYPlot
+            width={800}
+            height={280}
+            xType="time"
+            // xDomain={[timestamp - ONE_DAY, timestamp]}
+            yDomain={[0, 6000]}
+          >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <XAxis tickLabelAngle={-45} />
+            <YAxis tickFormat={(v) => v / 1000 + " kW"} />
+            <AreaSeries
+              className="area-elevated-series-1"
+              color="green"
+              data={generatedData.series}
+              opacity={0.75}
+              onSeriesMouseOver={() => {
+                this.setHoverSeries(generatedData.name);
+              }}
+              onSeriesMouseOut={() => {
+                this.setHoverSeries(null);
+              }}
+              onNearestXY={(datapoint) => {
+                if (hoverSeries === generatedData.name) {
+                  this.setHoverValue(datapoint);
+                }
+              }}
             />
-          ) : null}
-          {detailsValue ? (
-            <LineSeries
-              data={[
-                { x: detailsValue.x, y: detailsValue.y },
-                { x: detailsValue.x, y: detailsValue.maxY },
-              ]}
-              stroke="black"
-            />
-          ) : null}
-          {detailsValue ? (
-            <Hint
-              value={detailsValue}
-              format={this.hintFormat}
-              align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
-            >
-              <div className={classes.detailsDiv}>
-                <Usage
-                  data={{
-                    used: detailsValue.used,
-                    generated: [detailsValue.generated],
+            {usedData.map((s, i) => {
+              return (
+                <AreaSeries
+                  key={i}
+                  className="area-elevated-series-1"
+                  color={colors[i]}
+                  data={s.series}
+                  opacity={0.5}
+                  onSeriesMouseOver={() => {
+                    this.setHoverSeries(s.name);
                   }}
-                  height={120}
-                  width={120}
-                  yDomain={null}
+                  onSeriesMouseOut={() => {
+                    this.setHoverSeries(null);
+                  }}
+                  // onNearestX={(datapoint, info) => {
+                  //   this.setDetailsValue(datapoint, info);
+                  // }}
+                  onNearestXY={(datapoint, info) => {
+                    this.setDetailsValue(datapoint, info);
+                    if (hoverSeries === s.name) {
+                      this.setHoverValue(datapoint);
+                    }
+                  }}
                 />
-              </div>
-            </Hint>
-          ) : null}
-        </XYPlot>
+              );
+            })}
+            {hoverValue ? (
+              <Hint
+                value={hoverValue}
+                format={this.hintFormat}
+                // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
+              />
+            ) : null}
+            {detailsValue ? (
+              <LineSeries
+                data={[
+                  { x: detailsValue.x, y: detailsValue.y },
+                  { x: detailsValue.x, y: detailsValue.maxY },
+                ]}
+                stroke="black"
+              />
+            ) : null}
+            {detailsValue ? (
+              <Hint
+                value={detailsValue}
+                format={this.hintFormat}
+                align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
+              >
+                <div className={classes.detailsDiv}>
+                  <Usage
+                    data={{
+                      used: detailsValue.used,
+                      generated: [detailsValue.generated],
+                    }}
+                    height={120}
+                    width={120}
+                    yDomain={null}
+                  />
+                </div>
+              </Hint>
+            ) : null}
+          </XYPlot>
+        )}
       </div>
     );
   }
@@ -249,12 +269,14 @@ class TwentyFourHourUsage extends Component {
 
   updateData() {
     const egService = new EGaugeService();
-    egService.getHistoricalUsage().then((usage) => {
-      const mappedData = mapData(usage);
-      this.setState({
-        usedData: mappedData.used,
-        generatedData: mappedData.generated,
-        isLoadingData: false,
+    this.setState({ isLoadingData: true }, () => {
+      egService.getHistoricalUsage(this.state.activeTab).then((usage) => {
+        const mappedData = mapData(usage);
+        this.setState({
+          usedData: mappedData.used,
+          generatedData: mappedData.generated,
+          isLoadingData: false,
+        });
       });
     });
   }

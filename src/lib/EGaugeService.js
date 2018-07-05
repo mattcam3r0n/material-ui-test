@@ -10,8 +10,9 @@ export default class EGaugeService {
       });
   }
 
-  getHistoricalUsage() {
-    return fetch("/history")
+  getHistoricalUsage(period = "last24hours") {
+    // return fetch("/history")
+    return fetch("/usage/" + period)
       .then((response) => response.json())
       .then((data) => {
         return filterHistoricalData(data);

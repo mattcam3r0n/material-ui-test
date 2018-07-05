@@ -73,7 +73,7 @@ function getData(uri, options = {}) {
 function buildQueryString(options) {
   let qs = "?";
   Object.keys(options).forEach((k) => {
-    qs += k + (options[k] != null ? "=" + options[k] : "") + "&";
+    qs += k + (options[k] !== null ? "=" + options[k] : "") + "&";
   });
   return qs.substring(0, qs.length - 1);
 }
@@ -113,6 +113,7 @@ function transformInstantaneous(json) {
 }
 
 function transformStored(json) {
+  console.log("json", json);
   const data = {
     serial: json.group.$.serial,
     delta: json.group.data[0].$.delta,
