@@ -1,5 +1,4 @@
 import Egauge from "../Egauge";
-import moment from "moment";
 
 const timePeriods = {
   last24hours() {

@@ -1,6 +1,8 @@
 const excludedCategories = ["Grid", "Solar +"];
 const generatedCategories = ["Solar "];
 
+const defaultPeriod = "last24hours";
+
 export default class EGaugeService {
   getCurrentUsage() {
     return fetch("/current")
@@ -10,7 +12,16 @@ export default class EGaugeService {
       });
   }
 
-  getHistoricalUsage(period = "last24hours") {
+  getUsageDetail() {}
+
+  getUsageSummary(period = defaultPeriod) {
+    return fetch("/usage-summary/" + period).then((response) => response.json(period));
+    // .then((data) => {
+    //   return filterInstantaneousData(data);
+    // });
+  }
+
+  getHistoricalUsage(period = defaultPeriod) {
     // return fetch("/history")
     return fetch("/usage/" + period)
       .then((response) => response.json())
@@ -53,7 +64,7 @@ function filterHistoricalData(data) {
         series: d.series.map((s) => {
           return {
             timeStamp: s.timeStamp,
-            kW: s.kW / data.timeDelta
+            kW: s.kW / data.timeDelta,
           };
         }),
       };

@@ -126,11 +126,19 @@ function transformStored(json) {
         name: c._,
       };
     }),
-    rows: json.group.data[0].r.map((r) => {
+    rows: json.group.data.map((d) => d.r.map((r) => {
       return {
+        timeStamp: d.$.time_stamp,
         cells: r.c.map((v) => Number(v)),
       };
-    }),
+    })).reduce((a, c) => {
+      return a.concat(c);
+    }, []),
+    // rows: json.group.data[0].r.map((r) => {
+    //   return {
+    //     cells: r.c.map((v) => Number(v)),
+    //   };
+    // }),
   };
   return Promise.resolve(data);
 }

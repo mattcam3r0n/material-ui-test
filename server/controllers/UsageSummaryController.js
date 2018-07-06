@@ -1,8 +1,47 @@
 import Egauge from "../Egauge";
+import moment from "moment";
+
+const timePeriods = {
+  last24hours() {
+    return {
+      a: null,
+      T:
+        moment().unix() +
+        "," +
+        moment()
+          .subtract(1, "days")
+          .unix(),
+    };
+  },
+  last7days() {
+    return {
+      a: null,
+      T:
+        moment().unix() +
+        "," +
+        moment()
+          .subtract(7, "days")
+          .unix(),
+    };
+  },
+  last30days() {
+    return {
+      a: null,
+      T:
+        moment().unix() +
+        "," +
+        moment()
+          .subtract(30, "days")
+          .unix(),
+    };
+  },
+};
 
 export function usageSummary(request, response) {
+  const { period } = request.params;
+  const options = timePeriods[period]();
   const eg = new Egauge();
-  eg.getStoredData().then((data) => {
+  eg.getStoredData(options).then((data) => {
     response.json(mapData(data));
   });
 }
@@ -10,23 +49,13 @@ export function usageSummary(request, response) {
 function mapData(data) {
   // for each column, create a series object
   return {
-    serial: data.serial,
-    delta: data.delta,
-    epoch: data.epoch,
-    timeDelta: Number(data.timeDelta),
-    timeStamp: Number(data.timeStamp) * 1000, // convert to ms
-    columns: data.columns.map((c, i) => {
+    from: Number(data.rows[1].timeStamp) * 1000,
+    to: Number(data.rows[0].timeStamp) * 1000,
+    usage: data.columns.map((c, i) => {
       return {
         type: c.type,
         name: c.name,
-        series: data.rows.slice(1).map((r, j) => {
-          // calc timestamp from starting value, multiply by 1000
-          const ts = (data.timeStamp - data.timeDelta * j) * 1000;
-          return {
-            timeStamp: ts,
-            kW: Math.abs(r.cells[i]),
-          };
-        }),
+        kWh: Math.abs(data.rows[0].cells[i] - data.rows[1].cells[i]) / 3600000,
       };
     }),
   };
