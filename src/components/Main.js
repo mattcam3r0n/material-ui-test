@@ -1,19 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import CurrentUsage from "./CurrentUsage";
 import TwentyFourHourUsage from "./TwentyFourHourUsage";
 import EGaugeService from "../lib/EGaugeService";
-
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import UsageSummary from "../containers/UsageSummaryContainer";
+import TimePeriodMenu from "../containers/TimePeriodMenuContainer";
 
 const styles = (theme) => ({
   root: {
@@ -73,45 +67,13 @@ class GuttersGrid extends React.Component {
           >
             <Grid item xs={12}>
               <Paper className={classes.toolbar}>
-                <Tabs
-                  fullWidth
-                  value={this.state.activeTab}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  onChange={this.handleTabChange}
-                >
-                  <Tab label="Last 24 Hours" value="last24hours" />
-                  <Tab label="Last 7 Days" value="last7days" />
-                  <Tab label="Last 30 Days" value="last30days" />
-                  <Tab label="Since Last Bill" value="lastBill" />
-                </Tabs>
+                <TimePeriodMenu />
               </Paper>
             </Grid>
 
             <Grid item xs={4}>
               <Paper className={classes.summary}>
-                <Table className={classes.table}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Dessert (100g serving)</TableCell>
-                      <TableCell numeric>Calories</TableCell>
-                      <TableCell numeric>Fat (g)</TableCell>
-                      <TableCell numeric>Carbs (g)</TableCell>
-                      <TableCell numeric>Protein (g)</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        test
-                      </TableCell>
-                      <TableCell numeric>x</TableCell>
-                      <TableCell numeric>x</TableCell>
-                      <TableCell numeric>x</TableCell>
-                      <TableCell numeric>x</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+                <UsageSummary />
               </Paper>
             </Grid>
             <Grid item xs={8}>
