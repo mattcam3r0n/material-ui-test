@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
@@ -11,9 +12,13 @@ class TimePeriodMenu extends Component {
     activeTab: "last24hours",
   };
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
+  handleTabChange = (e, value) => {
+    this.setState({ activeTab: value }, () => {
+      // load data
+      this.props.loadUsageSummary(value);
+      this.props.loadUsageDetail(value);
+    });
+  };
 
   render() {
     return (
@@ -31,10 +36,11 @@ class TimePeriodMenu extends Component {
       </Tabs>
     );
   }
-
 }
 
 TimePeriodMenu.propTypes = {
+  loadUsageSummary: PropTypes.func.isRequired,
+  loadUsageDetail: PropTypes.func.isRequired,
 };
 
 export default TimePeriodMenu;

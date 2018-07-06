@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import TimePeriodMenu from "../components/TimePeriodMenu";
-import { loadUsageSummary } from "../actions";
+import { loadUsageSummary, loadUsageDetail } from "../actions";
 
 // function mapStateToProps(state) {
 //   return {
@@ -12,6 +12,9 @@ function mapDispatchToProps(dispatch) {
     loadUsageSummary(period) {
       dispatch(loadUsageSummary(period));
     },
+    loadUsageDetail(period) {
+      dispatch(loadUsageDetail(period));
+    }
   };
 }
 
