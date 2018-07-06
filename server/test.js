@@ -1,8 +1,42 @@
 import Egauge from "./Egauge";
 import moment from "moment";
-console.log(Egauge);
+import xml2js from "xml2js";
+import fetch from "node-fetch";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 
-const eg = new Egauge();
+// console.log(Egauge);
+const uri =
+  "http://egauge17632.egaug.es/cgi-bin/egauge-show?a&T=1530904259,1530817859";
+fetch(uri, {
+  method: "GET",
+  headers: {
+    "Content-Type": "text/xml",
+    "cache-control": "no-cache",
+  },
+  mode: "no-cors",
+})
+  .then((response) => {
+    return response.text();
+  })
+  .then((text) => {
+    return xmlToJson(text);
+  })
+  .then((json) => {
+    console.log(json.group.data);
+  });
+
+function xmlToJson(xml) {
+  return new Promise((resolve, reject) => {
+    xml2js.parseString(xml, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+// const eg = new Egauge();
 
 /* NOTES
 * use d to get data in days, then skip N-1 days.
@@ -25,18 +59,18 @@ http://egauge17632.egaug.es/cgi-bin/egauge-show?n=1&d&T=1529730000,1529470800
 
 */
 
-eg.getStoredData({
-  a: null,
-  C: null,
-  m: null,
-  n: 720,
-  s: 1,
-  t: moment().subtract(1, "d").unix(),
-}).then((data) => {
-  console.log(data.rows);
-  console.log("use:", data.rows[1].cells[0] / 3600000);
-  console.log("gen:", data.rows[1].cells[1] / 3600000);
-});
+// eg.getStoredData({
+//   a: null,
+//   C: null,
+//   m: null,
+//   n: 720,
+//   s: 1,
+//   t: moment().subtract(1, "d").unix(),
+// }).then((data) => {
+//   console.log(data.rows);
+//   console.log("use:", data.rows[1].cells[0] / 3600000);
+//   console.log("gen:", data.rows[1].cells[1] / 3600000);
+// });
 
 // eg.getStoredData({
 //   T: moment().unix() + "," + moment().subtract(1, "days").unix()

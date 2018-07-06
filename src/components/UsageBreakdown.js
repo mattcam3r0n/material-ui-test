@@ -46,8 +46,9 @@ class UsageBreakdown extends Component {
   }
 
   render() {
-    const { used, generated } = sortData(this.props.data);
-    const { width = 200, height = 300, yDomain = [0, 6000] } = this.props;
+    const { used } = mapData(this.props.data);
+    console.log(used);
+    const { width = 400, height = 150 } = this.props;
     const { hoverValue } = this.state;
     return (
       <div className="App">
@@ -63,10 +64,9 @@ class UsageBreakdown extends Component {
         >
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis 
-            style={{ fontSize: 8 }} />
+          <XAxis style={{ fontSize: 8 }} tickLabelAngle={-45} />
           <YAxis
-            tickFormat={(t) => t / 1000 + " kW"}
+            tickFormat={(t) => t + " kW"}
             style={{ fontSize: 8 }}
             // title="kW"
           />
@@ -118,27 +118,33 @@ class UsageBreakdown extends Component {
   // }
 }
 
-function sortData(data) {
-  if (!data || !data.used) {
+function mapData(data) {
+  const excluded = ["use", "gen", "Solar ", "Solar +", "Grid"];
+  if (!data || !data.usage) {
     return {
       used: [],
       generated: [],
     };
   }
   return {
-    used: data.used.sort(sortKW).map((x, i) => {
-      x.color = i;
-      return x;
-    }),
+    used: data.usage
+      .filter((u) => !excluded.includes(u.name))
+      .sort(sortKWH)
+      .map((x, i) => {
+        x.color = i;
+        x.x = x.name;
+        x.y = x.kWh;
+        return x;
+      }),
     generated: data.generated,
   };
 }
 
-function sortKW(a, b) {
-  if (a.kW < b.kW) {
+function sortKWH(a, b) {
+  if (a.kWh < b.kWh) {
     return -1;
   }
-  if (a.kW > b.kW) {
+  if (a.kWh > b.kWh) {
     return 1;
   }
   return 0;
@@ -148,7 +154,7 @@ UsageBreakdown.propTypes = {
   data: PropTypes.object.isRequired,
   height: PropTypes.number,
   width: PropTypes.number,
-  yDomain: PropTypes.array
+  yDomain: PropTypes.array,
 };
 
 export default UsageBreakdown;

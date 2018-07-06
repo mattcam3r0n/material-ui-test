@@ -5,6 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import numeral from "numeral";
 
 class UsageSummary extends Component {
   constructor(props) {
@@ -39,19 +40,19 @@ class UsageSummary extends Component {
             <TableCell component="th" scope="row">
               Energy Used
             </TableCell>
-            <TableCell numeric>{usage[0].kWh}</TableCell>
+            <TableCell numeric>{numeral(usage[0].kWh).format("0,0.0")}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell component="th" scope="row">
               Energy Generated
             </TableCell>
-            <TableCell numeric>{usage[1].kWh}</TableCell>
+            <TableCell numeric>{numeral(usage[1].kWh).format("0,0.0")}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell component="th" scope="row">
               Net
             </TableCell>
-            <TableCell numeric>{usage[1].kWh - usage[0].kWh}</TableCell>
+            <TableCell numeric>{numeral(usage[1].kWh - usage[0].kWh).format("0,0.0")}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

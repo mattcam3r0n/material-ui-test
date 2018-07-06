@@ -6,7 +6,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+// import MenuIcon from "@material-ui/icons/Menu";
+import WbSunny from "@material-ui/icons/WbSunny";
 
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -41,6 +42,9 @@ const styles = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  sunny: {
+    color: "yellow",
   },
   menuButton: {
     marginLeft: 12,
@@ -103,15 +107,17 @@ class Header extends React.Component {
             aria-label="open drawer"
             className={classNames(classes.menuButton)}
           >
-            <MenuIcon />
+            {/* <MenuIcon /> */}
+            <WbSunny className={classes.sunny} />
           </IconButton>
+
           <Typography
             variant="title"
             color="inherit"
             className={classes.flex}
             noWrap
           >
-            Mini variant drawer
+            Energy Usage
           </Typography>
           <div>
             <IconButton

@@ -77,9 +77,16 @@ class GuttersGrid extends React.Component {
                 <UsageSummary />
               </Paper>
             </Grid>
-            <Grid item xs={8}>
+
+            <Grid item xs={5}>
               <Paper className={classes.summary}>
                 <UsageBreakdown />
+              </Paper>
+            </Grid>
+
+            <Grid item xs={3}>
+              <Paper className={classes.summary}>
+                Estimate
               </Paper>
             </Grid>
 
