@@ -63,6 +63,9 @@ function getData(uri, options = {}) {
       return response.text();
     })
     .then((text) => {
+      // if (uri.includes("-show")) {
+      //   console.log(text);
+      // }
       return xmlToJson(text);
     })
     .then((json) => {
@@ -113,7 +116,7 @@ function transformInstantaneous(json) {
 }
 
 function transformStored(json) {
-  console.log("json", json);
+  console.log("json", json.group);
   const data = {
     serial: json.group.$.serial,
     delta: json.group.data[0].$.delta,

@@ -7,6 +7,7 @@ import CurrentUsage from "./CurrentUsage";
 import TwentyFourHourUsage from "./TwentyFourHourUsage";
 import EGaugeService from "../lib/EGaugeService";
 import UsageSummary from "../containers/UsageSummaryContainer";
+import UsageBreakdown from "../containers/UsageBreakdownContainer";
 import TimePeriodMenu from "../containers/TimePeriodMenuContainer";
 
 const styles = (theme) => ({
@@ -77,7 +78,9 @@ class GuttersGrid extends React.Component {
               </Paper>
             </Grid>
             <Grid item xs={8}>
-              <Paper className={classes.summary}>Usage By Category</Paper>
+              <Paper className={classes.summary}>
+                <UsageBreakdown />
+              </Paper>
             </Grid>
 
             <Grid item>
