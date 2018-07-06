@@ -1,4 +1,7 @@
+import timePeriods from "timePeriods";
+
 export default {
+  timePeriod: timePeriods.last24hours,
   usageSummary: {
     usage: [{
       name: "use",

@@ -1,7 +1,9 @@
+import timePeriods from "timePeriods";
+
 const excludedCategories = ["Grid", "Solar +"];
 const generatedCategories = ["Solar "];
 
-const defaultPeriod = "last24hours";
+const defaultPeriod = timePeriods.last24hours;
 
 export default class EGaugeService {
   getCurrentUsage() {

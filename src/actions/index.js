@@ -1,4 +1,13 @@
-export function loadUsageSummary(period = "last24hours") {
+import timePeriods from "../timePeriods";
+
+export function setTimePeriod(period = timePeriods.last24hours) {
+  return {
+    type: "SET_TIME_PERIOD",
+    value: period
+  };
+}
+
+export function loadUsageSummary(period = timePeriods.last24hours) {
   return function(dispatch) {
     dispatch({
       type: "LOAD_USAGE_SUMMARY",
@@ -20,7 +29,7 @@ export function usageSummaryLoaded(summary) {
   };
 }
 
-export function loadUsageDetail(period = "last24hours") {
+export function loadUsageDetail(period = timePeriods.last24hours) {
   return function(dispatch) {
     dispatch({
       type: "LOAD_USAGE_DETAIL",

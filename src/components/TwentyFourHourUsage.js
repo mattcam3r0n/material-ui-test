@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Usage from "./Usage";
+import timePeriods from "../timePeriods";
 
 import "../../node_modules/react-vis/dist/style.css";
 import {
@@ -58,7 +59,7 @@ class TwentyFourHourUsage extends Component {
     hoverSeries: null,
     hoverValue: null,
     detailsValue: null,
-    activeTab: "last24hours",
+    activeTab: timePeriods.last24hours,
   };
 
   componentDidMount() {

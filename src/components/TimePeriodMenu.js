@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import timePeriods from "../timePeriods";
 
 class TimePeriodMenu extends Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class TimePeriodMenu extends Component {
   }
 
   state = {
-    activeTab: "last24hours",
+    activeTab: timePeriods.last24hours,
   };
 
   handleTabChange = (e, value) => {
@@ -29,10 +30,10 @@ class TimePeriodMenu extends Component {
         textColor="primary"
         onChange={this.handleTabChange}
       >
-        <Tab label="Last 24 Hours" value="last24hours" />
-        <Tab label="Last 7 Days" value="last7days" />
-        <Tab label="Last 30 Days" value="last30days" />
-        <Tab label="Since Last Bill" value="lastBill" />
+        <Tab label="Last 24 Hours" value={timePeriods.last24hours} />
+        <Tab label="Last 7 Days" value={timePeriods.last7days} />
+        <Tab label="Last 30 Days" value={timePeriods.last30days} />
+        <Tab label="Since Last Bill" value={timePeriods.lastBill} />
       </Tabs>
     );
   }
