@@ -1,11 +1,16 @@
 import { combineReducers } from "redux";
 
 const usageSummary = (state = {}, action) => {
-  console.log('usageSummary reducer', state);
+  if (action.type === "USAGE_SUMMARY_LOADED") {
+    return action.value;
+  }
   return state;
 };
 
 const usageDetail = (state = {}, action) => {
+  if (action.type === "USAGE_DETAIL_LOADED") {
+    return action.value;
+  }
   return state;
 };
 

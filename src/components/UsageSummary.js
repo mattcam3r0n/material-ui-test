@@ -21,9 +21,11 @@ class UsageSummary extends Component {
   componentWillUnmount() {}
 
   render() {
+    console.log(this.props.data);
+    const { usage } = this.props.data;
     return (
       <Table>
-        <TableHead>
+        {/* <TableHead>
           <TableRow>
             <TableCell>Dessert (100g serving)</TableCell>
             <TableCell numeric>Calories</TableCell>
@@ -31,16 +33,25 @@ class UsageSummary extends Component {
             <TableCell numeric>Carbs (g)</TableCell>
             <TableCell numeric>Protein (g)</TableCell>
           </TableRow>
-        </TableHead>
+        </TableHead> */}
         <TableBody>
           <TableRow>
             <TableCell component="th" scope="row">
-              test
+              Energy Used
             </TableCell>
-            <TableCell numeric>x</TableCell>
-            <TableCell numeric>x</TableCell>
-            <TableCell numeric>x</TableCell>
-            <TableCell numeric>x</TableCell>
+            <TableCell numeric>{usage[0].kWh}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell component="th" scope="row">
+              Energy Generated
+            </TableCell>
+            <TableCell numeric>{usage[1].kWh}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell component="th" scope="row">
+              Net
+            </TableCell>
+            <TableCell numeric>{usage[1].kWh - usage[0].kWh}</TableCell>
           </TableRow>
         </TableBody>
       </Table>

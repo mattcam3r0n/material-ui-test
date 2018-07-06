@@ -1,4 +1,4 @@
-export function loadUsageSummary(period) {
+export function loadUsageSummary(period = "last24hours") {
   return function(dispatch) {
     dispatch({
       type: "LOAD_USAGE_SUMMARY",

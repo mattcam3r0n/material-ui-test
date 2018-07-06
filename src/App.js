@@ -24,6 +24,11 @@ const styles = () => ({
 });
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.loadUsageSummary();
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -39,6 +44,7 @@ class App extends Component {
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
+  loadUsageSummary: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(App);

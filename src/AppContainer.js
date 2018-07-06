@@ -1,7 +1,7 @@
 import App from "./App";
 import "./App.css";
 import { connect } from "react-redux";
-// import { loadStocks, loadPrices } from "./actions";
+import { loadUsageSummary } from "./actions";
 
 function mapStateToProps(state) {
   return {
@@ -12,9 +12,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // loadStocks() {
-    //   dispatch(loadStocks());
-    // },
+    loadUsageSummary() {
+      dispatch(loadUsageSummary());
+    },
     // loadPrices(tickers) {
     //   dispatch(loadPrices(tickers));
     // },
