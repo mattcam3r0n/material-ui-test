@@ -14,18 +14,19 @@ class TimePeriodMenu extends Component {
   };
 
   handleTabChange = (e, value) => {
-    this.setState({ activeTab: value }, () => {
-      // load data
-      this.props.loadUsageSummary(value);
-      this.props.loadUsageDetail(value);
-    });
+    this.props.setTimePeriod(value);
+    // this.setState({ activeTab: value }, () => {
+    //   // load data
+    //   this.props.loadUsageSummary(value);
+    //   this.props.loadUsageDetail(value);
+    // });
   };
 
   render() {
     return (
       <Tabs
         fullWidth
-        value={this.state.activeTab}
+        value={this.props.timePeriod}
         indicatorColor="primary"
         textColor="primary"
         onChange={this.handleTabChange}
@@ -40,6 +41,8 @@ class TimePeriodMenu extends Component {
 }
 
 TimePeriodMenu.propTypes = {
+  timePeriod: PropTypes.string,
+  setTimePeriod: PropTypes.func.isRequired,
   loadUsageSummary: PropTypes.func.isRequired,
   loadUsageDetail: PropTypes.func.isRequired,
 };

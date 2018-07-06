@@ -1,14 +1,18 @@
 import { connect } from "react-redux";
 import TimePeriodMenu from "../components/TimePeriodMenu";
-import { loadUsageSummary, loadUsageDetail } from "../actions";
+import { setTimePeriod, loadUsageSummary, loadUsageDetail } from "../actions";
 
-// function mapStateToProps(state) {
-//   return {
-//   };
-// }
+function mapStateToProps(state) {
+  return {
+    timePeriod: state.timePeriod
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
+    setTimePeriod(period) {
+      dispatch(setTimePeriod(period));
+    },
     loadUsageSummary(period) {
       dispatch(loadUsageSummary(period));
     },
@@ -20,6 +24,6 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(TimePeriodMenu);

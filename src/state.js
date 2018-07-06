@@ -1,4 +1,4 @@
-import timePeriods from "timePeriods";
+import timePeriods from "./timePeriods";
 
 export default {
   timePeriod: timePeriods.last24hours,

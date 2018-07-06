@@ -1,10 +1,17 @@
 import timePeriods from "../timePeriods";
 
 export function setTimePeriod(period = timePeriods.last24hours) {
-  return {
-    type: "SET_TIME_PERIOD",
-    value: period
+  return function(dispatch) {
+    dispatch({
+      type: "SET_TIME_PERIOD",
+      value: period
+    });
+    dispatch(loadUsageSummary(period));
   };
+  // return {
+  //   type: "SET_TIME_PERIOD",
+  //   value: period
+  // };
 }
 
 export function loadUsageSummary(period = timePeriods.last24hours) {

@@ -49,7 +49,6 @@ class TwentyFourHourUsage extends Component {
     this.setHoverValue = this.setHoverValue.bind(this);
     this.setDetailsValue = this.setDetailsValue.bind(this);
     this.clearHoverValue = this.clearHoverValue.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   state = {
@@ -74,13 +73,6 @@ class TwentyFourHourUsage extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.intervalId);
-  }
-
-  handleTabChange(event, value) {
-    this.setState({ activeTab: value }, () => {
-      console.log("handleTabChange", value, this.state.activeTab);
-      this.updateData();
-    });
   }
 
   setHoverSeries(seriesName) {
@@ -142,19 +134,7 @@ class TwentyFourHourUsage extends Component {
       <div className="App">
         {isLoadingData ? (
           <CircularProgress className={classes.progress} size={50} />
-        ) : null
-        // <Tabs
-        //   fullWidth
-        //   value={this.state.activeTab}
-        //   indicatorColor="primary"
-        //   textColor="primary"
-        //   onChange={this.handleTabChange}
-        // >
-        //   <Tab label="Last 24 Hours" value="last24hours" />
-        //   <Tab label="Last 7 Days" value="last7days" />
-        //   <Tab label="Last 30 Days" value="last30days" />
-        // </Tabs>
-        }
+        ) : null}
 
         {isLoadingData ? null : (
           <XYPlot
