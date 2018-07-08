@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import CurrentUsage from "./CurrentUsage";
-import TwentyFourHourUsage from "./TwentyFourHourUsage";
+import UsageDetail from "../containers/UsageDetailContainer";
 import EGaugeService from "../lib/EGaugeService";
 import UsageSummary from "../containers/UsageSummaryContainer";
 import UsageBreakdown from "../containers/UsageBreakdownContainer";
@@ -92,7 +92,7 @@ class GuttersGrid extends React.Component {
 
             <Grid item>
               <Paper className={classes.twentyFourHourUsage}>
-                <TwentyFourHourUsage />
+                <UsageDetail />
               </Paper>
             </Grid>
             <Grid item>

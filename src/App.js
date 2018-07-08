@@ -24,9 +24,24 @@ const styles = () => ({
 });
 
 class App extends Component {
+  state = {
+    intervalId: null
+  }
 
   componentDidMount() {
     this.props.loadUsageSummary();
+    this.props.loadUsageDetail();
+    const intervalId = setInterval(() => {
+      this.props.loadUsageSummary();
+      this.props.loadUsageDetail();
+    }, 60000);
+    this.setState({
+      intervalId,
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
   }
 
   render() {
@@ -45,6 +60,7 @@ class App extends Component {
 App.propTypes = {
   classes: PropTypes.object.isRequired,
   loadUsageSummary: PropTypes.func.isRequired,
+  loadUsageDetail: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(App);

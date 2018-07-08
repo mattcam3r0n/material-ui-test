@@ -7,11 +7,8 @@ export function setTimePeriod(period = timePeriods.last24hours) {
       value: period
     });
     dispatch(loadUsageSummary(period));
+    dispatch(loadUsageDetail(period));
   };
-  // return {
-  //   type: "SET_TIME_PERIOD",
-  //   value: period
-  // };
 }
 
 export function loadUsageSummary(period = timePeriods.last24hours) {
@@ -38,8 +35,9 @@ export function usageSummaryLoaded(summary) {
 
 export function loadUsageDetail(period = timePeriods.last24hours) {
   return function(dispatch) {
+    console.log('loadUsageDetail');
     dispatch({
-      type: "LOAD_USAGE_DETAIL",
+      type: "LOAD_USAGE_DETAIL"
     });
     fetch("/usage/" + period)
       .then((response) => {
@@ -53,7 +51,7 @@ export function loadUsageDetail(period = timePeriods.last24hours) {
 
 export function usageDetailLoaded(detail) {
   return {
-    type: "USAGE_SUMMARY_DETAIL",
+    type: "USAGE_DETAIL_LOADED",
     value: detail,
   };
 }

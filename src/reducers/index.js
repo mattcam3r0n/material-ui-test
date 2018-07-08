@@ -21,10 +21,21 @@ const usageDetail = (state = {}, action) => {
   return state;
 };
 
+const usageDetailIsLoading = (state = false, action) => {
+  if (action.type === "LOAD_USAGE_DETAIL") {
+    return true;
+  }
+  if (action.type === "USAGE_DETAIL_LOADED") {
+    return false;
+  }
+  return state;
+};
+
 const rootReducer = combineReducers({
   timePeriod,
   usageSummary,
-  usageDetail
+  usageDetail,
+  usageDetailIsLoading
 });
 
 export default rootReducer;

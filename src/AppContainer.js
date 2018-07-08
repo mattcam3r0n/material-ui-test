@@ -1,9 +1,9 @@
 import App from "./App";
 import "./App.css";
 import { connect } from "react-redux";
-import { loadUsageSummary } from "./actions";
+import { loadUsageSummary, loadUsageDetail } from "./actions";
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {
     // stocks: state.stocks,
     // prices: state.prices,
@@ -15,9 +15,9 @@ function mapDispatchToProps(dispatch) {
     loadUsageSummary() {
       dispatch(loadUsageSummary());
     },
-    // loadPrices(tickers) {
-    //   dispatch(loadPrices(tickers));
-    // },
+    loadUsageDetail() {
+      dispatch(loadUsageDetail());
+    },
   };
 }
 

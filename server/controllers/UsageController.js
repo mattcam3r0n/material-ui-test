@@ -34,9 +34,9 @@ export function usage(request, response) {
   const { period } = request.params;
   const options = timePeriods[period]();
 
-  console.log(options);
   eg.getStoredData(options)
     .then(mapData)
+    .then(reshapeData)
     .then((data) => {
       response.json(data);
     });
@@ -64,5 +64,28 @@ function mapData(data) {
         }),
       };
     }),
+  };
+}
+
+function reshapeData(data) {
+  const excludedCategories = ["Grid", "Solar +"];
+  const generatedCategories = ["Solar "];
+  const filteredData = data.columns
+    .filter((d) => !excludedCategories.includes(d.name))
+    .map((d) => {
+      return {
+        type: generatedCategories.includes(d.name) ? "Generated" : "Used",
+        name: d.name,
+        series: d.series.map((s) => {
+          return {
+            timeStamp: s.timeStamp,
+            kW: s.kW / data.timeDelta,
+          };
+        }),
+      };
+    });
+  return {
+    used: filteredData.filter((d) => d.type === "Used"),
+    generated: filteredData.filter((d) => d.type === "Generated"),
   };
 }
