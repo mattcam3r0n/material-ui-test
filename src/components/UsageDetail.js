@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Usage from "./Usage";
-import timePeriods from "../timePeriods";
 
 import "../../node_modules/react-vis/dist/style.css";
 import {
@@ -16,7 +15,6 @@ import {
   AreaSeries,
   Hint,
 } from "react-vis";
-import EGaugeService from "../lib/EGaugeService";
 
 const colors = [
   "#FFFE0F",
@@ -55,22 +53,9 @@ class UsageDetail extends Component {
     hoverSeries: null,
     hoverValue: null,
     detailsValue: null,
-    activeTab: timePeriods.last24hours,
+    nearestDataPoint: null,
+    nearestDataIndex: null,
   };
-
-  componentDidMount() {
-    // this.updateData();
-    // const intervalId = setInterval(() => {
-    //   this.updateData();
-    // }, 60000);
-    // this.setState({
-    //   intervalId,
-    // });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
 
   setHoverSeries(seriesName) {
     this.setState({ hoverSeries: seriesName });
@@ -80,18 +65,30 @@ class UsageDetail extends Component {
     this.setState({ hoverValue: value });
   }
 
-  setDetailsValue(value, info) {
+  setNearest(dataPoint, info) {
+    if (!dataPoint || !info || info.index === null) {
+      return;
+    }
+
+    this.setState({
+      nearestDataPoint: dataPoint,
+      nearestDataIndex: info.index,
+    });
+  }
+
+  setDetailsValue() {
+    const { nearestDataIndex, nearestDataPoint } = this.state;
     const { usageDetail } = this.props;
     if (
-      !info ||
-      !info.index ||
+      !nearestDataIndex ||
+      !nearestDataPoint ||
       !usageDetail.used ||
       usageDetail.used.length === 0
     ) {
       return;
     }
     const used = usageDetail.used.map((d) => {
-      const s = d.series[info.index];
+      const s = d.series[nearestDataIndex];
       return {
         name: d.name,
         x: d.type,
@@ -102,12 +99,12 @@ class UsageDetail extends Component {
     const gend = {
       name: usageDetail.generated[0].name,
       x: usageDetail.generated[0].type,
-      y: usageDetail.generated[0].series[info.index].kW,
-      kW: usageDetail.generated[0].series[info.index].kW,
+      y: usageDetail.generated[0].series[nearestDataIndex].kW,
+      kW: usageDetail.generated[0].series[nearestDataIndex].kW,
     };
     this.setState({
       detailsValue: {
-        x: value.x,
+        x: nearestDataPoint.x,
         y: 0,
         maxY: 6000,
         used,
@@ -125,7 +122,12 @@ class UsageDetail extends Component {
 
   render() {
     const { classes } = this.props;
-    const { hoverSeries, hoverValue, detailsValue } = this.state;
+    const {
+      hoverSeries,
+      hoverValue,
+      detailsValue,
+      nearestDataPoint,
+    } = this.state;
     const isLoading = this.props.usageDetailIsLoading;
     const { generated = { series: [] }, used = [] } = mapData(
       this.props.usageDetail
@@ -136,25 +138,36 @@ class UsageDetail extends Component {
           width={800}
           height={280}
           xType="time"
-          // xDomain={[timestamp - ONE_DAY, timestamp]}
           yDomain={[0, 6000]}
+          onClick={() => {
+            if (this.state.hoverSeries === null) {
+              this.setState({
+                detailsValue: null,
+              });
+            }
+          }}
+          onMouseLeave={() => {
+          }}
         >
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis tickLabelAngle={-45} />
           <YAxis tickFormat={(v) => v / 1000 + " kW"} />
           <AreaSeries
-            className="area-elevated-series-1"
             color="green"
             data={generated.series}
             opacity={0.75}
+            onSeriesClick={() => {
+              this.setDetailsValue();
+            }}
             onSeriesMouseOver={() => {
               this.setHoverSeries(generated.name);
             }}
             onSeriesMouseOut={() => {
-              this.setHoverSeries(null);
+              // this.setHoverSeries(null);
             }}
-            onNearestXY={(datapoint) => {
+            onNearestX={(datapoint, info) => {
+              this.setNearest(datapoint, info);
               if (hoverSeries === generated.name) {
                 this.setHoverValue(datapoint);
               }
@@ -164,48 +177,47 @@ class UsageDetail extends Component {
             return (
               <AreaSeries
                 key={i}
-                className="area-elevated-series-1"
                 color={colors[i]}
                 data={s.series}
                 opacity={0.5}
+                onSeriesClick={() => {
+                  this.setDetailsValue();
+                }}
                 onSeriesMouseOver={() => {
                   this.setHoverSeries(s.name);
                 }}
                 onSeriesMouseOut={() => {
                   this.setHoverSeries(null);
                 }}
-                // onNearestX={(datapoint, info) => {
-                //   this.setDetailsValue(datapoint, info);
-                // }}
-                onNearestXY={(datapoint, info) => {
-                  this.setDetailsValue(datapoint, info);
+                onNearestX={(datapoint, info) => {
+                  this.setNearest(datapoint, info);
                   if (hoverSeries === s.name) {
                     this.setHoverValue(datapoint);
                   }
                 }}
+                // onNearestXY={(datapoint, info) => {
+                //   this.setNearest(datapoint, info);
+                //   // this.setDetailsValue(datapoint, info);
+                //   console.log(datapoint, info);
+                //   if (hoverSeries === s.name) {
+                //     this.setHoverValue(datapoint);
+                //   }
+                // }}
               />
             );
           })}
-          {hoverValue ? (
+          {hoverValue && hoverSeries ? (
             <Hint
               value={hoverValue}
               format={this.hintFormat}
+              // orientation="topleft"
               // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
-            />
-          ) : null}
-          {detailsValue ? (
-            <LineSeries
-              data={[
-                { x: detailsValue.x, y: detailsValue.y },
-                { x: detailsValue.x, y: detailsValue.maxY },
-              ]}
-              stroke="black"
             />
           ) : null}
           {detailsValue ? (
             <Hint
               value={detailsValue}
-              format={this.hintFormat}
+              // format={this.hintFormat}
               align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
             >
               <div className={classes.detailsDiv}>
@@ -220,6 +232,15 @@ class UsageDetail extends Component {
                 />
               </div>
             </Hint>
+          ) : null}
+          {nearestDataPoint ? (
+            <LineSeries
+              data={[
+                { x: nearestDataPoint.x, y: nearestDataPoint.y },
+                { x: nearestDataPoint.x, y: 6000 },
+              ]}
+              stroke="black"
+            />
           ) : null}
         </XYPlot>
         <br />
@@ -242,20 +263,6 @@ class UsageDetail extends Component {
       });
     }
     return labels;
-  }
-
-  updateData() {
-    const egService = new EGaugeService();
-    this.setState({ isLoading: true }, () => {
-      egService.getHistoricalUsage(this.state.activeTab).then((usage) => {
-        const mappedData = mapData(usage);
-        this.setState({
-          usedData: mappedData.used,
-          generatedData: mappedData.generated,
-          isLoading: false,
-        });
-      });
-    });
   }
 }
 

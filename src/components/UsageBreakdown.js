@@ -47,9 +47,8 @@ class UsageBreakdown extends Component {
 
   render() {
     const { used } = mapData(this.props.data);
-    console.log(used);
     const { width = 400, height = 150 } = this.props;
-    const { hoverValue } = this.state;
+    // const { hoverValue } = this.state;
     return (
       <div className="App">
         <XYPlot

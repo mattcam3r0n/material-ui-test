@@ -8,9 +8,6 @@ import TableRow from "@material-ui/core/TableRow";
 import numeral from "numeral";
 
 class UsageSummary extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   state = {
     used: [],
@@ -22,7 +19,6 @@ class UsageSummary extends Component {
   componentWillUnmount() {}
 
   render() {
-    console.log(this.props.data);
     const { usage } = this.props.data;
     return (
       <Table>

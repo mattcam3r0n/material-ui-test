@@ -69,7 +69,7 @@ function mapData(data) {
 
 function reshapeData(data) {
   const excludedCategories = ["Grid", "Solar +"];
-  const generatedCategories = ["Solar "];
+  const generatedCategories = ["Solar"];
   const filteredData = data.columns
     .filter((d) => !excludedCategories.includes(d.name))
     .map((d) => {

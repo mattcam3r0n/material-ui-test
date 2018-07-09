@@ -29,12 +29,12 @@ class CurrentUsage extends Component {
 
   componentDidMount() {
     this.updateData();
-    const intervalId = setInterval(() => {
-      this.updateData();
-    }, 2000);
-    this.setState({
-      intervalId,
-    });
+    // const intervalId = setInterval(() => {
+    //   this.updateData();
+    // }, 2000);
+    // this.setState({
+    //   intervalId,
+    // });
   }
 
   componentWillUnmount() {

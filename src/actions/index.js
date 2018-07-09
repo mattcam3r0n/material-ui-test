@@ -35,7 +35,6 @@ export function usageSummaryLoaded(summary) {
 
 export function loadUsageDetail(period = timePeriods.last24hours) {
   return function(dispatch) {
-    console.log('loadUsageDetail');
     dispatch({
       type: "LOAD_USAGE_DETAIL"
     });

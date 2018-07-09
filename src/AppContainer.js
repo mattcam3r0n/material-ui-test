@@ -3,8 +3,9 @@ import "./App.css";
 import { connect } from "react-redux";
 import { loadUsageSummary, loadUsageDetail } from "./actions";
 
-function mapStateToProps() {
+function mapStateToProps(state) {
   return {
+    timePeriod: state.timePeriod
     // stocks: state.stocks,
     // prices: state.prices,
   };

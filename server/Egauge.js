@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
-import xml2js from "xml2js";
+// import xml2js from "xml2js";
+import xml2json from "xml2json";
 
 class Egauge {
   constructor(host = "egauge17632.egaug.es") {
@@ -50,7 +51,6 @@ class Egauge {
 
 function getData(uri, options = {}) {
   const uriWithOptions = uri + buildQueryString(options);
-  console.log(uriWithOptions);
   return fetch(uriWithOptions, {
     method: "GET",
     headers: {
@@ -63,9 +63,6 @@ function getData(uri, options = {}) {
       return response.text();
     })
     .then((text) => {
-      // if (uri.includes("-show")) {
-      //   console.log(text);
-      // }
       return xmlToJson(text);
     })
     .then((json) => {
@@ -82,32 +79,33 @@ function buildQueryString(options) {
 }
 
 function xmlToJson(xml) {
-  return new Promise((resolve, reject) => {
-    xml2js.parseString(xml, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   xml2js.parseString(xml, (err, result) => {
+  //     if (err) {
+  //       reject(err);
+  //     } else {
+  //       resolve(result);
+  //     }
+  //   });
+  // });
+  return xml2json.toJson(xml, { object: true });
 }
 
 function transformInstantaneous(json) {
   const data = {
-    serial: json.data.$.serial,
+    serial: json.data.serial,
     ts: json.data.ts,
     r: json.data.r.map((r) => {
       const reg = {
-        t: r.$.t,
-        n: r.$.n,
-        v: r.v[0],
+        t: r.t,
+        n: r.n,
+        v: r.v,
       };
       if (r.i) {
-        reg.i = r.i[0];
+        reg.i = r.i;
       }
-      if (r.$.rt) {
-        reg.rt = r.$.rt;
+      if (r.rt) {
+        reg.rt = r.rt;
       }
       return reg;
     }),
@@ -116,27 +114,35 @@ function transformInstantaneous(json) {
 }
 
 function transformStored(json) {
-  console.log("json", json.group);
+  if (!Array.isArray(json.group.data)) {
+    json.group.data = [json.group.data];
+  }
   const data = {
-    serial: json.group.$.serial,
-    delta: json.group.data[0].$.delta,
-    epoch: json.group.data[0].$.epoch,
-    timeDelta: json.group.data[0].$.time_delta,
-    timeStamp: json.group.data[0].$.time_stamp,
+    serial: json.group.serial,
+    epoch: json.group.data[0].epoch,
+    timeDelta: json.group.data[0].time_delta,
+    timeStamp: json.group.data[0].time_stamp,
     columns: json.group.data[0].cname.map((c) => {
       return {
-        type: c.$.t,
-        name: c._,
+        type: c.t,
+        name: c.$t,
       };
     }),
-    rows: json.group.data.map((d) => d.r.map((r) => {
-      return {
-        timeStamp: d.$.time_stamp,
-        cells: r.c.map((v) => Number(v)),
-      };
-    })).reduce((a, c) => {
-      return a.concat(c);
-    }, []),
+    rows: json.group.data
+      .map((d) => {
+        if (!Array.isArray(d.r)) {
+          d.r = [d.r];
+        }
+        return d.r.map((r) => {
+          return {
+            timeStamp: d.time_stamp,
+            cells: r.c.map((v) => Number(v)),
+          };
+        });
+      })
+      .reduce((a, c) => {
+        return a.concat(c);
+      }, []),
     // rows: json.group.data[0].r.map((r) => {
     //   return {
     //     cells: r.c.map((v) => Number(v)),

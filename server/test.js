@@ -1,6 +1,7 @@
 import Egauge from "./Egauge";
 import moment from "moment";
-import xml2js from "xml2js";
+// import xml2js from "xml2js";
+import xml2json from "xml2json";
 import fetch from "node-fetch";
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 
@@ -22,18 +23,19 @@ fetch(uri, {
     return xmlToJson(text);
   })
   .then((json) => {
-    console.log(json.group.data);
+    console.log(json);
   });
 
 function xmlToJson(xml) {
   return new Promise((resolve, reject) => {
-    xml2js.parseString(xml, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(result);
-      }
-    });
+    // xml2js.parseString(xml, (err, result) => {
+    //   if (err) {
+    //     reject(err);
+    //   } else {
+    //     resolve(result);
+    //   }
+    // });
+    resolve(xml2json.toJson(xml));
   });
 }
 // const eg = new Egauge();

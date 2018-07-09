@@ -9,6 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Main from "./components/Main";
+import timePeriods from "./timePeriods";
 // import MiniDrawer from './components/scratch';
 
 const styles = () => ({
@@ -32,8 +33,8 @@ class App extends Component {
     this.props.loadUsageSummary();
     this.props.loadUsageDetail();
     const intervalId = setInterval(() => {
-      this.props.loadUsageSummary();
-      this.props.loadUsageDetail();
+      this.props.loadUsageSummary(this.props.timePeriod || timePeriods.last24hours);
+      this.props.loadUsageDetail(this.props.timePeriod || timePeriods.last24hours);
     }, 60000);
     this.setState({
       intervalId,
@@ -61,6 +62,7 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
   loadUsageSummary: PropTypes.func.isRequired,
   loadUsageDetail: PropTypes.func.isRequired,
+  timePeriod: PropTypes.string
 };
 
 export default withStyles(styles, { withTheme: true })(App);
