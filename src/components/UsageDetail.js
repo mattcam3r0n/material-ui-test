@@ -290,9 +290,9 @@ function mapData(data) {
           name: d.name,
           type: d.type,
         };
-      }),
+      })
     };
-  });
+  }); 
   const gen = data.generated[0];
   const generatedData = {
     name: gen.name,

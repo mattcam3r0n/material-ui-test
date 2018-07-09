@@ -81,7 +81,7 @@ function reshapeData(data) {
             timeStamp: s.timeStamp,
             kW: s.kW / data.timeDelta,
           };
-        }),
+        }).reverse(),
       };
     });
   return {
