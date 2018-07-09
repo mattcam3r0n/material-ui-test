@@ -32,17 +32,23 @@ class App extends Component {
   componentDidMount() {
     this.props.loadUsageSummary();
     this.props.loadUsageDetail();
-    const intervalId = setInterval(() => {
+    this.props.loadCurrentUsage();
+    const usageIntervalId = setInterval(() => {
       this.props.loadUsageSummary(this.props.timePeriod || timePeriods.last24hours);
       this.props.loadUsageDetail(this.props.timePeriod || timePeriods.last24hours);
     }, 60000);
+    const currentUsageIntervalId = setInterval(() => {
+      this.props.loadCurrentUsage();
+    }, 10000);
     this.setState({
-      intervalId,
+      usageIntervalId,
+      currentUsageIntervalId
     });
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.intervalId);
+    clearInterval(this.state.usageIntervalId);
+    clearInterval(this.state.currentUsageIntervalId);
   }
 
   render() {
@@ -62,6 +68,7 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
   loadUsageSummary: PropTypes.func.isRequired,
   loadUsageDetail: PropTypes.func.isRequired,
+  loadCurrentUsage: PropTypes.func.isRequired,
   timePeriod: PropTypes.string
 };
 

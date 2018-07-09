@@ -54,3 +54,25 @@ export function usageDetailLoaded(detail) {
     value: detail,
   };
 }
+
+export function loadCurrentUsage() {
+  return function(dispatch) {
+    dispatch({
+      type: "LOAD_CURRENT_USAGE"
+    });
+    fetch("/current/")
+      .then((response) => {
+        return response.json();
+      })
+      .then((usage) => {
+        dispatch(currentUsageLoaded(usage));
+      });
+  };
+}
+
+export function currentUsageLoaded(usage) {
+  return {
+    type: "CURRENT_USAGE_LOADED",
+    value: usage,
+  };
+}

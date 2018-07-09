@@ -12,7 +12,7 @@ class Egauge {
   getInstantaneousData() {
     const excludedCategories = ["Grid", "Solar +"];
     const generatedCategories = ["Solar "];
-    return getData(this.instantUri, { inst: "" })
+    return getData(this.instantUri, { inst: null })
       .then(transformInstantaneous)
       .then((result) => {
         return result.r
@@ -51,6 +51,7 @@ class Egauge {
 
 function getData(uri, options = {}) {
   const uriWithOptions = uri + buildQueryString(options);
+  console.log("uriWithOptions", uriWithOptions);
   return fetch(uriWithOptions, {
     method: "GET",
     headers: {
@@ -79,15 +80,6 @@ function buildQueryString(options) {
 }
 
 function xmlToJson(xml) {
-  // return new Promise((resolve, reject) => {
-  //   xml2js.parseString(xml, (err, result) => {
-  //     if (err) {
-  //       reject(err);
-  //     } else {
-  //       resolve(result);
-  //     }
-  //   });
-  // });
   return xml2json.toJson(xml, { object: true });
 }
 

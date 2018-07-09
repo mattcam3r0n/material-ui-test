@@ -21,6 +21,13 @@ const usageDetail = (state = {}, action) => {
   return state;
 };
 
+const currentUsage = (state = {}, action) => {
+  if (action.type === "CURRENT_USAGE_LOADED") {
+    return action.value;
+  }
+  return state;
+};
+
 const usageDetailIsLoading = (state = false, action) => {
   if (action.type === "LOAD_USAGE_DETAIL") {
     return true;
@@ -35,6 +42,7 @@ const rootReducer = combineReducers({
   timePeriod,
   usageSummary,
   usageDetail,
+  currentUsage,
   usageDetailIsLoading
 });
 

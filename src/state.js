@@ -13,5 +13,6 @@ export default {
     }]
   },
   usageDetail: {},
+  currentUsage: {},
   usageDetailIsLoading: false
 };

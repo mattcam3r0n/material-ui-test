@@ -1,7 +1,7 @@
 import App from "./App";
 import "./App.css";
 import { connect } from "react-redux";
-import { loadUsageSummary, loadUsageDetail } from "./actions";
+import { loadUsageSummary, loadUsageDetail, loadCurrentUsage } from "./actions";
 
 function mapStateToProps(state) {
   return {
@@ -19,6 +19,9 @@ function mapDispatchToProps(dispatch) {
     loadUsageDetail() {
       dispatch(loadUsageDetail());
     },
+    loadCurrentUsage() {
+      dispatch(loadCurrentUsage());
+    }
   };
 }
 

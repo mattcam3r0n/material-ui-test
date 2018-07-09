@@ -1,8 +1,7 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "../../node_modules/react-vis/dist/style.css";
 import Usage from "./Usage";
-
-import EGaugeService from "../lib/EGaugeService";
 
 class CurrentUsage extends Component {
   constructor(props) {
@@ -27,39 +26,22 @@ class CurrentUsage extends Component {
     });
   }
 
-  componentDidMount() {
-    this.updateData();
-    // const intervalId = setInterval(() => {
-    //   this.updateData();
-    // }, 2000);
-    // this.setState({
-    //   intervalId,
-    // });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
   render() {
-    const { used, generated } = this.state;
+    const { used = [], generated = [] } = this.props.data;
     return (
-      <Usage data={{
-        used,
-        generated
-      }} />
+      <Usage
+        data={{
+          used,
+          generated,
+        }}
+      />
     );
   }
 
-  updateData() {
-    const egService = new EGaugeService();
-    egService.getCurrentUsage().then((usage) => {
-      this.setState({
-        used: usage.used,
-        generated: usage.generated,
-      });
-    });
-  }
 }
+
+CurrentUsage.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default CurrentUsage;

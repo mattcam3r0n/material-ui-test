@@ -108,18 +108,6 @@ class Usage extends Component {
     );
   }
 
-  // updateData() {
-  //   const egService = new EGaugeService();
-  //   egService.getCurrentUsage().then((usage) => {
-  //     this.setState({
-  //       used: usage.used.sort(sortKW).map((x, i) => {
-  //         x.color = i;
-  //         return x;
-  //       }),
-  //       generated: usage.generated,
-  //     });
-  //   });
-  // }
 }
 
 function sortData(data) {

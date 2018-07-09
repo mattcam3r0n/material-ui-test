@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import CurrentUsage from "./CurrentUsage";
+import CurrentUsage from "../containers/CurrentUsageContainer";
 import UsageDetail from "../containers/UsageDetailContainer";
-import EGaugeService from "../lib/EGaugeService";
 import UsageSummary from "../containers/UsageSummaryContainer";
 import UsageBreakdown from "../containers/UsageBreakdownContainer";
 import TimePeriodMenu from "../containers/TimePeriodMenuContainer";
@@ -48,10 +47,6 @@ class GuttersGrid extends React.Component {
       [key]: value,
     });
   };
-
-  componentDidMount() {
-    this.getData();
-  }
 
   render() {
     const { classes } = this.props;
@@ -127,15 +122,6 @@ class GuttersGrid extends React.Component {
         </Grid>
       </Grid>
     );
-  }
-
-  getData() {
-    const egService = new EGaugeService();
-    egService.getCurrentUsage().then((usage) => {
-      this.setState({
-        data: usage,
-      });
-    });
   }
 }
 
