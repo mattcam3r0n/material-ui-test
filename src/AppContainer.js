@@ -13,11 +13,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    loadUsageSummary() {
-      dispatch(loadUsageSummary());
+    loadUsageSummary(period) {
+      dispatch(loadUsageSummary(period));
     },
-    loadUsageDetail() {
-      dispatch(loadUsageDetail());
+    loadUsageDetail(period) {
+      dispatch(loadUsageDetail(period));
     },
     loadCurrentUsage() {
       dispatch(loadCurrentUsage());

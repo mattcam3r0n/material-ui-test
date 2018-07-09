@@ -52,7 +52,7 @@ class Usage extends Component {
 
   render() {
     const { used, generated } = sortData(this.props.data);
-    const { width = 200, height = 300, yDomain = [0, 6000] } = this.props;
+    const { width = 200, height = 230, yDomain = [0, 6000] } = this.props;
     const { hoverValue } = this.state;
     return (
       <div className="App">

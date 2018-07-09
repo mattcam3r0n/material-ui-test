@@ -132,12 +132,11 @@ class UsageDetail extends Component {
     const { xDomain, generated = { series: [] }, used = [] } = mapData(
       this.props.usageDetail
     );
-    console.log(xDomain);
     return (
       <div className="App">
         <XYPlot
           width={800}
-          height={280}
+          height={210}
           xType="time"
           yDomain={[0, 6000]}
           xDomain={xDomain}

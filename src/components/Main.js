@@ -9,6 +9,10 @@ import UsageSummary from "../containers/UsageSummaryContainer";
 import UsageBreakdown from "../containers/UsageBreakdownContainer";
 import TimePeriodMenu from "../containers/TimePeriodMenuContainer";
 
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+
 const styles = (theme) => ({
   root: {
     marginTop: 80,
@@ -17,19 +21,21 @@ const styles = (theme) => ({
     flexGrow: 1,
     overflow: "auto",
   },
+  cardHeader: {
+    padding: 10
+  },
+  cardContent: {
+    padding: 10
+  },
   twentyFourHourUsage: {
-    height: 320,
-    width: 820,
-    padding: 20,
+    padding: 10,
   },
   toolbar: {},
   summary: {
-    padding: 20,
+    padding: 10,
   },
   currentUsage: {
-    height: 320,
-    width: 220,
-    padding: 20,
+    padding: 10,
   },
   control: {
     padding: theme.spacing.unit * 2,
@@ -67,58 +73,48 @@ class GuttersGrid extends React.Component {
               </Paper>
             </Grid>
 
-            <Grid item xs={4}>
-              <Paper className={classes.summary}>
-                <UsageSummary />
-              </Paper>
+            <Grid item xs={3}>
+              <Card>
+                <CardHeader subheader="Usage Summary" className={classes.cardHeader} />
+                <CardContent className={classes.cardContent}>
+                  <UsageSummary />
+                </CardContent>
+              </Card>
             </Grid>
 
-            <Grid item xs={5}>
-              <Paper className={classes.summary}>
-                <UsageBreakdown />
-              </Paper>
+            <Grid item xs={6}>
+              <Card>
+                <CardHeader subheader="Usage Breakdown" className={classes.cardHeader} />
+                <CardContent className={classes.cardContent}>
+                  <UsageBreakdown />
+                </CardContent>
+              </Card>
             </Grid>
 
             <Grid item xs={3}>
-              <Paper className={classes.summary}>
-                Estimate
-              </Paper>
+              <Card>
+                <CardHeader subheader="Billing Estimate" />
+                <CardContent />
+              </Card>
             </Grid>
 
-            <Grid item>
-              <Paper className={classes.twentyFourHourUsage}>
-                <UsageDetail />
-              </Paper>
+            <Grid item xs={9}>
+              <Card>
+                <CardHeader subheader="Usage Over Time Period" />
+                <CardContent>
+                  <UsageDetail />
+                </CardContent>
+              </Card>
             </Grid>
-            <Grid item>
-              <Paper className={classes.currentUsage}>
-                <CurrentUsage />
-              </Paper>
+            <Grid item xs={3}>
+              <Card>
+                <CardHeader subheader="Current Usage" />
+                <CardContent>
+                  <CurrentUsage />
+                </CardContent>
+              </Card>
             </Grid>
-            {/* <Grid item>
-              <Paper className={classes.currentUsage}>
-                <Usage
-                  data={this.state.data}
-                  height={120}
-                  width={120}
-                  yDomain={null}
-                />
-              </Paper>
-            </Grid> */}
           </Grid>
-          {/* 
-          <Grid
-            container
-            className={classes.demo}
-            justify="center"
-            spacing={Number(spacing)}
-          >
-            {[0, 1, 2].map((value) => (
-              <Grid key={value} item>
-                <Paper className={classes.paper} />
-              </Grid>
-            ))}
-          </Grid> */}
         </Grid>
       </Grid>
     );

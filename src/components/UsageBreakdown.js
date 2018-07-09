@@ -30,19 +30,9 @@ class UsageBreakdown extends Component {
     });
   };
 
-  componentDidMount() {
-    // this.updateData();
-    // const intervalId = setInterval(() => {
-    //   this.updateData();
-    // }, 2000);
-    // this.setState({
-    //   intervalId,
-    // });
-  }
-
   render() {
     const { used } = mapData(this.props.data);
-    const { width = 400, height = 150 } = this.props;
+    const { width = 450, height = 150 } = this.props;
     const { hoverValue } = this.state;
     return (
       <div className="App">

@@ -34,6 +34,7 @@ class App extends Component {
     this.props.loadUsageDetail();
     this.props.loadCurrentUsage();
     const usageIntervalId = setInterval(() => {
+      console.log(this.props.timePeriod);
       this.props.loadUsageSummary(this.props.timePeriod || timePeriods.last24hours);
       this.props.loadUsageDetail(this.props.timePeriod || timePeriods.last24hours);
     }, 60000);
