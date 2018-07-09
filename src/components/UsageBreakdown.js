@@ -9,15 +9,9 @@ import {
   VerticalBarSeries,
   XAxis,
   YAxis,
-  Hint,
 } from "react-vis";
 
 class UsageBreakdown extends Component {
-  constructor(props) {
-    super(props);
-    // this.setHoverValue = this.setHoverValue.bind(this);
-    // this.clearHoverValue = this.clearHoverValue.bind(this);
-  }
 
   state = {
     hoverValue: null,

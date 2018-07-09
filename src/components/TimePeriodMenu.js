@@ -5,9 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import timePeriods from "../timePeriods";
 
 class TimePeriodMenu extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   state = {
     activeTab: timePeriods.last24hours,
