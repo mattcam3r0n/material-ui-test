@@ -203,14 +203,12 @@ class UsageDetail extends Component {
             <Hint
               value={hoverValue}
               format={this.hintFormat}
-              // orientation="topleft"
               // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
             />
           ) : null}
           {detailsValue ? (
             <Hint
               value={detailsValue}
-              // format={this.hintFormat}
               align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
             >
               <div className={classes.detailsDiv}>

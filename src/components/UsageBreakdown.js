@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../../node_modules/react-vis/dist/style.css";
 import PropTypes from "prop-types";
+import numeral from "numeral";
 
 import {
   XYPlot,
@@ -9,25 +10,25 @@ import {
   VerticalBarSeries,
   XAxis,
   YAxis,
+  Hint
 } from "react-vis";
 
 class UsageBreakdown extends Component {
-
   state = {
     hoverValue: null,
     used: [],
     generated: [],
   };
 
-  // setHoverValue(value) {
-  //   this.setState({ hoverValue: value });
-  // }
+  setHoverValue = (value) => {
+    this.setState({ hoverValue: value });
+  };
 
-  // clearHoverValue() {
-  //   this.setState({
-  //     hoverValue: null,
-  //   });
-  // }
+  clearHoverValue = () => {
+    this.setState({
+      hoverValue: null,
+    });
+  };
 
   componentDidMount() {
     // this.updateData();
@@ -42,7 +43,7 @@ class UsageBreakdown extends Component {
   render() {
     const { used } = mapData(this.props.data);
     const { width = 400, height = 150 } = this.props;
-    // const { hoverValue } = this.state;
+    const { hoverValue } = this.state;
     return (
       <div className="App">
         <XYPlot
@@ -63,20 +64,6 @@ class UsageBreakdown extends Component {
             style={{ fontSize: 8 }}
             // title="kW"
           />
-          {/* <VerticalBarSeries
-            color="green"
-            data={generated}
-            onValueMouseOver={this.setHoverValue}
-            onValueMouseOut={this.clearHoverValue}
-          /> */}
-          {/* {hoverValue ? (
-            <Hint
-              value={hoverValue}
-              format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
-              ]}
-            />
-          ) : null} */}
           <VerticalBarSeries
             onValueMouseOver={this.setHoverValue}
             onValueMouseOut={this.clearHoverValue}
@@ -84,23 +71,22 @@ class UsageBreakdown extends Component {
             stroke="white"
             data={used}
           />
-          {/* {hoverValue ? (
+          {hoverValue ? (
             <Hint
               value={hoverValue}
               format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
+                { title: val.name, value: numeral(val.kWh).format("0.0") + " kWh" },
               ]}
             />
-          ) : null} */}
+          ) : null}
         </XYPlot>
       </div>
     );
   }
-
 }
 
 function mapData(data) {
-  const excluded = ["use", "gen", "Solar ", "Solar +", "Grid"];
+  const excluded = ["use", "gen", "Solar", "Solar +", "Grid"];
   if (!data || !data.usage) {
     return {
       used: [],
