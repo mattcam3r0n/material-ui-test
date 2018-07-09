@@ -6,6 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import CurrentUsage from "../containers/CurrentUsageContainer";
 import UsageDetail from "../containers/UsageDetailContainer";
 import UsageSummary from "../containers/UsageSummaryContainer";
+import BillingEstimate from "../containers/BillingEstimate";
 import UsageBreakdown from "../containers/UsageBreakdownContainer";
 import TimePeriodMenu from "../containers/TimePeriodMenuContainer";
 
@@ -27,7 +28,7 @@ const styles = (theme) => ({
   cardContent: {
     padding: 10
   },
-  twentyFourHourUsage: {
+  usageDetail: {
     padding: 10,
   },
   toolbar: {},
@@ -94,7 +95,9 @@ class GuttersGrid extends React.Component {
             <Grid item xs={3}>
               <Card>
                 <CardHeader subheader="Billing Estimate" />
-                <CardContent />
+                <CardContent className={classes.cardContent}>
+                  <BillingEstimate />
+                </CardContent>
               </Card>
             </Grid>
 
