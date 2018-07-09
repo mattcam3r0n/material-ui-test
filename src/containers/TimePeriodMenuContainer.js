@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 import TimePeriodMenu from "../components/TimePeriodMenu";
-import { setTimePeriod, loadUsageSummary, loadUsageDetail } from "../actions";
+import { loadUsageDetail } from "../actions/loadUsageDetail";
+import loadUsageSummary from "../actions/loadUsageSummary";
+import { setTimePeriod } from "../actions/setTimePeriod";
 
 function mapStateToProps(state) {
   return {
