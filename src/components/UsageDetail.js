@@ -140,13 +140,14 @@ class UsageDetail extends Component {
           xType="time"
           yDomain={[0, 6000]}
           onClick={() => {
-            if (this.state.hoverSeries === null) {
-              this.setState({
-                detailsValue: null,
-              });
-            }
+            this.setDetailsValue();
           }}
           onMouseLeave={() => {
+            // if (this.state.hoverSeries === null) {
+            //   this.setState({
+            //     detailsValue: null,
+            //   });
+            // }
           }}
         >
           <VerticalGridLines />
@@ -157,9 +158,9 @@ class UsageDetail extends Component {
             color="green"
             data={generated.series}
             opacity={0.75}
-            onSeriesClick={() => {
-              this.setDetailsValue();
-            }}
+            // onSeriesClick={() => {
+            //   this.setDetailsValue();
+            // }}
             onSeriesMouseOver={() => {
               this.setHoverSeries(generated.name);
             }}
@@ -180,9 +181,9 @@ class UsageDetail extends Component {
                 color={colors[i]}
                 data={s.series}
                 opacity={0.5}
-                onSeriesClick={() => {
-                  this.setDetailsValue();
-                }}
+                // onSeriesClick={() => {
+                //   this.setDetailsValue();
+                // }}
                 onSeriesMouseOver={() => {
                   this.setHoverSeries(s.name);
                 }}
@@ -195,14 +196,6 @@ class UsageDetail extends Component {
                     this.setHoverValue(datapoint);
                   }
                 }}
-                // onNearestXY={(datapoint, info) => {
-                //   this.setNearest(datapoint, info);
-                //   // this.setDetailsValue(datapoint, info);
-                //   console.log(datapoint, info);
-                //   if (hoverSeries === s.name) {
-                //     this.setHoverValue(datapoint);
-                //   }
-                // }}
               />
             );
           })}
@@ -238,6 +231,15 @@ class UsageDetail extends Component {
               data={[
                 { x: nearestDataPoint.x, y: nearestDataPoint.y },
                 { x: nearestDataPoint.x, y: 6000 },
+              ]}
+              stroke="silver"
+            />
+          ) : null}
+          {detailsValue ? (
+            <LineSeries
+              data={[
+                { x: detailsValue.x, y: detailsValue.y },
+                { x: detailsValue.x, y: 6000 },
               ]}
               stroke="black"
             />

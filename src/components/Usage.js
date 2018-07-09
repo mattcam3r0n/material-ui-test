@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../../node_modules/react-vis/dist/style.css";
 import PropTypes from "prop-types";
+import numeral from "numeral";
 
 import {
   XYPlot,
@@ -84,7 +85,7 @@ class Usage extends Component {
             <Hint
               value={hoverValue}
               format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
+                { title: val.name, value: numeral(val.kW / 1000).format("0.0") + " kW" },
               ]}
             />
           ) : null}
@@ -99,7 +100,7 @@ class Usage extends Component {
             <Hint
               value={hoverValue}
               format={(val) => [
-                { title: val.name, value: val.kW / 1000 + " kW" },
+                { title: val.name, value: numeral(val.kW / 1000).format("0.0") + " kW" },
               ]}
             />
           ) : null}
