@@ -8,36 +8,44 @@ import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 // console.log(Egauge);
 const uri =
   "http://egauge17632.egaug.es/cgi-bin/egauge-show?a&T=1530904259,1530817859";
-fetch(uri, {
-  method: "GET",
-  headers: {
-    "Content-Type": "text/xml",
-    "cache-control": "no-cache",
-  },
-  mode: "no-cors",
-})
-  .then((response) => {
-    return response.text();
-  })
-  .then((text) => {
-    return xmlToJson(text);
-  })
-  .then((json) => {
-    console.log(json);
-  });
+// fetch(uri, {
+//   method: "GET",
+//   headers: {
+//     "Content-Type": "text/xml",
+//     "cache-control": "no-cache",
+//   },
+//   mode: "no-cors",
+// })
+//   .then((response) => {
+//     return response.text();
+//   })
+//   .then((text) => {
+//     return xmlToJson(text);
+//   })
+//   .then((json) => {
+//     console.log(json);
+//   });
 
-function xmlToJson(xml) {
-  return new Promise((resolve, reject) => {
-    // xml2js.parseString(xml, (err, result) => {
-    //   if (err) {
-    //     reject(err);
-    //   } else {
-    //     resolve(result);
-    //   }
-    // });
-    resolve(xml2json.toJson(xml));
-  });
-}
+// function xmlToJson(xml) {
+//   return new Promise((resolve, reject) => {
+//     // xml2js.parseString(xml, (err, result) => {
+//     //   if (err) {
+//     //     reject(err);
+//     //   } else {
+//     //     resolve(result);
+//     //   }
+//     // });
+//     resolve(xml2json.toJson(xml));
+//   });
+// }
+
+import BillEstimator from "../src/BillEstimator";
+console.log(BillEstimator);
+const estimator = new BillEstimator();
+const b = estimator.calculate(1200, 743);
+
+console.log(b);
+
 // const eg = new Egauge();
 
 /* NOTES

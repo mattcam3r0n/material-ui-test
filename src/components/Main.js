@@ -94,7 +94,7 @@ class GuttersGrid extends React.Component {
 
             <Grid item xs={3}>
               <Card>
-                <CardHeader subheader="Billing Estimate" />
+                <CardHeader subheader="Estimated Bill" />
                 <CardContent className={classes.cardContent}>
                   <BillingEstimate />
                 </CardContent>
