@@ -129,9 +129,10 @@ class UsageDetail extends Component {
       nearestDataPoint,
     } = this.state;
     const isLoading = this.props.usageDetailIsLoading;
-    const { generated = { series: [] }, used = [] } = mapData(
+    const { xDomain, generated = { series: [] }, used = [] } = mapData(
       this.props.usageDetail
     );
+    console.log(xDomain);
     return (
       <div className="App">
         <XYPlot
@@ -139,6 +140,7 @@ class UsageDetail extends Component {
           height={280}
           xType="time"
           yDomain={[0, 6000]}
+          xDomain={xDomain}
           onClick={() => {
             this.setDetailsValue();
           }}
@@ -306,6 +308,7 @@ function mapData(data) {
     }),
   };
   return {
+    xDomain: [gen.series[0].timeStamp, gen.series[gen.series.length - 1].timeStamp],
     used: stackedData,
     generated: generatedData,
   };

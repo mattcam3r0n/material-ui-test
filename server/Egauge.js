@@ -109,6 +109,7 @@ function transformStored(json) {
   if (!Array.isArray(json.group.data)) {
     json.group.data = [json.group.data];
   }
+  console.log('json data', json.group.data);
   const data = {
     serial: json.group.serial,
     epoch: json.group.data[0].epoch,
@@ -123,7 +124,7 @@ function transformStored(json) {
     rows: json.group.data
       .map((d) => {
         if (!Array.isArray(d.r)) {
-          d.r = [d.r];
+          d.r = [d.r || []];
         }
         return d.r.map((r) => {
           return {
