@@ -1,4 +1,6 @@
 import { combineReducers } from "redux";
+import BillEstimator from "../BillEstimator";
+const estimator = new BillEstimator();
 
 const timePeriod = (state = "last24hours", action) => {
   if (action.type === "SET_TIME_PERIOD") {
@@ -10,6 +12,13 @@ const timePeriod = (state = "last24hours", action) => {
 const usageSummary = (state = {}, action) => {
   if (action.type === "USAGE_SUMMARY_LOADED") {
     return action.value;
+  }
+  return state;
+};
+
+const estimatedBill = (state = null, action) => {
+  if (action.type === "USAGE_SUMMARY_LOADED") {
+    return estimator.calculate(action.value.use, action.value.gen);
   }
   return state;
 };
@@ -41,6 +50,7 @@ const usageDetailIsLoading = (state = false, action) => {
 const rootReducer = combineReducers({
   timePeriod,
   usageSummary,
+  estimatedBill,
   usageDetail,
   currentUsage,
   usageDetailIsLoading

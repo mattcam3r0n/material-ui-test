@@ -31,7 +31,7 @@ class TimePeriodMenu extends Component {
         <Tab label="Last 24 Hours" value={timePeriods.last24hours} />
         <Tab label="Last 7 Days" value={timePeriods.last7days} />
         <Tab label="Last 30 Days" value={timePeriods.last30days} />
-        <Tab label="Since Last Bill" value={timePeriods.lastBill} />
+        <Tab disabled label="Since Last Bill" value={timePeriods.lastBill} />
       </Tabs>
     );
   }

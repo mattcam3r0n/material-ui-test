@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   tableCell: {
-    padding: 10
+    padding: 10,
   },
 });
 
@@ -25,24 +25,41 @@ class BillingEstimate extends Component {
 
   render() {
     const { classes } = this.props;
-    const { usage } = this.props.data;
+    const { lineItems = [] } = this.props.data;
     return (
       <Table>
         <TableBody>
-          <TableRow>
+          {lineItems.map((li, i) => {
+            return (
+              <TableRow key={i}>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  className={classes.tableCell}
+                >
+                  {li.name}
+                </TableCell>
+                <TableCell numeric className={classes.tableCell}>
+                  {numeral(li.amount).format("$0,0.00")}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+        {/* <TableRow>
             <TableCell component="th" scope="row" className={classes.tableCell}>
               Energy Used
             </TableCell>
             <TableCell numeric className={classes.tableCell}>
-              {numeral(usage[0].kWh).format("0,0.0")} kWh
+              {numeral(usedAmount).format("$0,0.00")}
             </TableCell>
-          </TableRow>
-          <TableRow>
+          </TableRow> */}
+        {/* <TableRow>
             <TableCell component="th" scope="row" className={classes.tableCell}>
               Energy Generated
             </TableCell>
             <TableCell numeric className={classes.tableCell}>
-              {numeral(usage[1].kWh).format("0,0.0")} kWh
+              {numeral(generatedAmount).format("$0,0.00")}
             </TableCell>
           </TableRow>
           <TableRow>
@@ -50,17 +67,16 @@ class BillingEstimate extends Component {
               Net
             </TableCell>
             <TableCell numeric className={classes.tableCell}>
-              {numeral(usage[0].kWh - usage[1].kWh).format("0,0.0")} kWh
+              {numeral(total).format("$0,0.00")}
             </TableCell>
-          </TableRow>
-        </TableBody>
+          </TableRow> */}
       </Table>
     );
   }
 }
 
 BillingEstimate.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object,
   classes: PropTypes.object,
 };
 

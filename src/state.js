@@ -12,6 +12,7 @@ export default {
       kWh: 0
     }]
   },
+  estimatedBill: {},
   usageDetail: {},
   currentUsage: {},
   usageDetailIsLoading: false

@@ -40,10 +40,13 @@ const uri =
 // }
 
 import BillEstimator from "../src/BillEstimator";
-console.log(BillEstimator);
 const estimator = new BillEstimator();
 const b = estimator.calculate(1200, 743);
 
+b.lineItems.forEach((li) => {
+  console.log(li.name, "(" + li.eligibleKWH + " * " + li.rate + " = " + li.amount + ")");
+});
+console.log();
 console.log(b);
 
 // const eg = new Egauge();

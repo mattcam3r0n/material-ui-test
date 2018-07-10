@@ -8,7 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import Main from "./components/Main";
+import Main from "./containers/MainContainer";
 import timePeriods from "./timePeriods";
 // import MiniDrawer from './components/scratch';
 

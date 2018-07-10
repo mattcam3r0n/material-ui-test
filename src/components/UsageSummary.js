@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = () => ({
   tableCell: {
-    padding: 10
+    padding: 10,
   },
 });
 
@@ -24,7 +24,7 @@ class UsageSummary extends Component {
   componentWillUnmount() {}
 
   render() {
-    const { classes } = this.props;
+    const { classes, estimate } = this.props;
     const { usage } = this.props.data;
     return (
       <Table>
@@ -36,6 +36,9 @@ class UsageSummary extends Component {
             <TableCell numeric className={classes.tableCell}>
               {numeral(usage[0].kWh).format("0,0.0")} kWh
             </TableCell>
+            <TableCell numeric className={classes.tableCell}>
+              {numeral(estimate.usedAmount).format("$0,0.00")}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell component="th" scope="row" className={classes.tableCell}>
@@ -44,6 +47,9 @@ class UsageSummary extends Component {
             <TableCell numeric className={classes.tableCell}>
               {numeral(usage[1].kWh).format("0,0.0")} kWh
             </TableCell>
+            <TableCell numeric className={classes.tableCell}>
+              {numeral(estimate.generatedAmount).format("$0,0.00")}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell component="th" scope="row" className={classes.tableCell}>
@@ -51,6 +57,9 @@ class UsageSummary extends Component {
             </TableCell>
             <TableCell numeric className={classes.tableCell}>
               {numeral(usage[0].kWh - usage[1].kWh).format("0,0.0")} kWh
+            </TableCell>
+            <TableCell numeric className={classes.tableCell}>
+              {numeral(estimate.total).format("$0,0.00")}
             </TableCell>
           </TableRow>
         </TableBody>
@@ -61,6 +70,7 @@ class UsageSummary extends Component {
 
 UsageSummary.propTypes = {
   data: PropTypes.object.isRequired,
+  estimate: PropTypes.object,
   classes: PropTypes.object,
 };
 

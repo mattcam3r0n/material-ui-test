@@ -1,13 +1,13 @@
 import { connect } from "react-redux";
-import BillingEstimate from "../components/BillingEstimate";
+import Main from "../components/Main";
 
 function mapStateToProps(state) {
   return {
-    data: state.usageSummary
+    timePeriod: state.timePeriod
   };
 }
 
 export default connect(
   mapStateToProps,
   null
-)(BillingEstimate);
+)(Main);
