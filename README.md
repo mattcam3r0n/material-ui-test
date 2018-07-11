@@ -10,6 +10,9 @@ This dashboard interacts with my home's EGauge energy monitoring device, showing
 * Material-ui
 * EGauge API
 
+# Live Demo
+[Live Demo Here](https://energy-usage-mcam3r0n.herokuapp.com/)
+
 # Running Locally
 
 To run locally, use: 
