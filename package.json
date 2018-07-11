@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
     "moment": "^2.22.2",
@@ -21,7 +25,7 @@
     "xml2json": "^0.11.2"
   },
   "scripts": {
-    "start": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
+    "start": "babel-node --presets es2015,stage-2 ./server/index.js",
     "start-orig": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -32,10 +36,6 @@
     "temp": "babel-node --presets es2015,stage-2 ./server/test.js"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.3",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
     "concurrently": "^3.5.1",
     "eslint": "^4.19.1",
     "eslint-plugin-babel": "^5.1.0",
