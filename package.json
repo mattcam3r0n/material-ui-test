@@ -21,7 +21,7 @@
     "xml2json": "^0.11.2"
   },
   "scripts": {
-    "start": "node ./server/index.js",
+    "start": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
     "start-orig": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
