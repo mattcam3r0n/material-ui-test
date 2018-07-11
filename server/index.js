@@ -3,6 +3,11 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+// Express only serves static assets in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("build"));
+}
+
 app.use(bodyParser.json());
 app.use(require("./routes"));
 
@@ -19,6 +24,3 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Listening on port:${port}`); // eslint-disable-line
 });
-
-
-
