@@ -15,5 +15,6 @@ export default {
   estimatedBill: {},
   usageDetail: {},
   currentUsage: {},
-  usageDetailIsLoading: false
+  usageDetailIsLoading: false,
+  isDetailVisible: false,
 };

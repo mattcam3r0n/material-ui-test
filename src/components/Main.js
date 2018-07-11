@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import CloseIcon from "@material-ui/icons/Close";
+import Button from "@material-ui/core/Button";
 import CurrentUsage from "../containers/CurrentUsageContainer";
 import UsageDetail from "../containers/UsageDetailContainer";
 import UsageSummary from "../containers/UsageSummaryContainer";
@@ -25,10 +27,10 @@ const styles = (theme) => ({
     overflow: "auto",
   },
   cardHeader: {
-    padding: 10
+    padding: 10,
   },
   cardContent: {
-    padding: 10
+    padding: 10,
   },
   usageDetail: {
     padding: 10,
@@ -39,6 +41,9 @@ const styles = (theme) => ({
   },
   currentUsage: {
     padding: 10,
+  },
+  closeDetails: {
+    fontSize: 12,
   },
   control: {
     padding: theme.spacing.unit * 2,
@@ -51,6 +56,7 @@ class GuttersGrid extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     const { classes, timePeriod } = this.props;
     const { spacing } = this.state;
 
@@ -71,7 +77,21 @@ class GuttersGrid extends React.Component {
 
             <Grid item xs={9}>
               <Card>
-                <CardHeader subheader={"Usage Over " + timePeriodLabels[timePeriod]} />
+                <CardHeader
+                  subheader={"Usage Over " + timePeriodLabels[timePeriod]}
+                  action={
+                    this.props.isDetailVisible ? (
+                      <Button
+                        size="small"
+                        onClick={() => this.props.hideDetails()}
+                        style={{ fontSize: 10, padding: 5 }}
+                      >
+                        Close Details
+                        {/* <CloseIcon /> */}
+                      </Button>
+                    ) : null
+                  }
+                />
                 <CardContent>
                   <UsageDetail />
                 </CardContent>
@@ -89,7 +109,10 @@ class GuttersGrid extends React.Component {
 
             <Grid item xs={5}>
               <Card>
-                <CardHeader subheader="Usage Summary" className={classes.cardHeader} />
+                <CardHeader
+                  subheader="Usage Summary"
+                  className={classes.cardHeader}
+                />
                 <CardContent className={classes.cardContent}>
                   <UsageSummary />
                 </CardContent>
@@ -98,7 +121,10 @@ class GuttersGrid extends React.Component {
 
             <Grid item xs={7}>
               <Card>
-                <CardHeader subheader="Usage Breakdown" className={classes.cardHeader} />
+                <CardHeader
+                  subheader="Usage Breakdown"
+                  className={classes.cardHeader}
+                />
                 <CardContent className={classes.cardContent}>
                   <UsageBreakdown />
                 </CardContent>
@@ -113,7 +139,6 @@ class GuttersGrid extends React.Component {
                 </CardContent>
               </Card>
             </Grid>
-
           </Grid>
         </Grid>
       </Grid>
@@ -124,6 +149,8 @@ class GuttersGrid extends React.Component {
 GuttersGrid.propTypes = {
   classes: PropTypes.object.isRequired,
   timePeriod: PropTypes.string.isRequired,
+  isDetailVisible: PropTypes.bool,
+  hideDetails: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(GuttersGrid);

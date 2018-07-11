@@ -47,13 +47,24 @@ const usageDetailIsLoading = (state = false, action) => {
   return state;
 };
 
+const isDetailVisible = (state = false, action) => {
+  if (action.type === "SHOW_DETAILS") {
+    return true;
+  }
+  if (action.type === "HIDE_DETAILS") {
+    return false;
+  }
+  return state;
+};
+
 const rootReducer = combineReducers({
   timePeriod,
   usageSummary,
   estimatedBill,
   usageDetail,
   currentUsage,
-  usageDetailIsLoading
+  usageDetailIsLoading,
+  isDetailVisible
 });
 
 export default rootReducer;

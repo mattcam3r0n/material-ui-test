@@ -121,7 +121,7 @@ class UsageDetail extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, isDetailVisible } = this.props;
     const {
       hoverSeries,
       hoverValue,
@@ -141,6 +141,7 @@ class UsageDetail extends Component {
           yDomain={[0, 6000]}
           xDomain={xDomain}
           onClick={() => {
+            this.props.showDetails();
             this.setDetailsValue();
           }}
           onMouseLeave={() => {
@@ -207,7 +208,7 @@ class UsageDetail extends Component {
               // align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
             />
           ) : null}
-          {detailsValue ? (
+          {isDetailVisible ? (
             <Hint
               value={detailsValue}
               align={{ horizontal: Hint.AUTO, vertical: Hint.ALIGN.TOP_EDGE }}
@@ -234,7 +235,7 @@ class UsageDetail extends Component {
               stroke="silver"
             />
           ) : null}
-          {detailsValue ? (
+          {isDetailVisible ? (
             <LineSeries
               data={[
                 { x: detailsValue.x, y: detailsValue.y },
@@ -323,6 +324,8 @@ UsageDetail.propTypes = {
   classes: PropTypes.object.isRequired,
   usageDetail: PropTypes.object.isRequired,
   usageDetailIsLoading: PropTypes.bool,
+  showDetails: PropTypes.func.isRequired,
+  isDetailVisible: PropTypes.bool
 };
 
 export default withStyles(styles)(UsageDetail);
