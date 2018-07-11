@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import CloseIcon from "@material-ui/icons/Close";
 import Button from "@material-ui/core/Button";
 import CurrentUsage from "../containers/CurrentUsageContainer";
 import UsageDetail from "../containers/UsageDetailContainer";
@@ -56,7 +55,6 @@ class GuttersGrid extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     const { classes, timePeriod } = this.props;
     const { spacing } = this.state;
 
@@ -87,7 +85,6 @@ class GuttersGrid extends React.Component {
                         style={{ fontSize: 10, padding: 5 }}
                       >
                         Close Details
-                        {/* <CloseIcon /> */}
                       </Button>
                     ) : null
                   }
